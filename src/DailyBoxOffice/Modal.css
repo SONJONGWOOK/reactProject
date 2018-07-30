@@ -1,0 +1,159 @@
+.Info {
+  width: 100%;
+  display: flex;
+}
+
+.Info_Poster{
+  flex-grow: 1;
+  max-width: 100%;
+  position: relative;
+  box-shadow: -10px 19px 38px rgba(83, 83, 83, 0.3), 10px 15px 12px rgba(80,80,80,0.22);
+}
+.Info_Colums{
+  width:30%;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.Info_Inner{
+  width:100%;
+  background-color: white;
+  align-items: flex-start;
+  /* box-sizing: border-box; */
+  /* margin-left : 10px; */
+  /* box-shadow: -10px 19px 38px rgba(83, 83, 83, 0.3), 10px 15px 12px rgba(80,80,80,0.22); */
+}
+/* .Info_Colums .Info_Poster{
+  width:60%;
+} */
+.Info_Inner h1{
+  font-size : 3rem;
+  /* margin-left : 100px; */
+  text-align: left;
+}
+
+.Info_Detail{
+  /* width: 30%; */
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  justify-content: space-around; 
+  margin-left : 10px;
+  /* font-size: 0.7em; */
+  
+  }
+/* .Info_Detail_c{
+   margin-left: 20%;
+} */
+
+.MovieDetail_bottom{
+  /* width: 30%; */
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+  /* justify-content: flex-start;  */
+  /* font-size: 0.7em; */
+
+}
+/* .MovieDetail_bottom p{ */
+  /* font-size: 0.7em; */
+/* } */
+
+/* .Detail_Arrays{ */
+  /* font-size: 0.7em; */
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  /* align-self: auto; */
+/* } */
+
+.Detail_Arrays:first-child{
+  margin-top : 1.5rem;
+}
+
+
+/* .Info_Colums:last-child{
+  padding:10px 0;
+  width: 40%;
+} */
+
+.Loading {
+  width: 100%;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width:100%;
+    height: 100%; 
+    z-index: 1;   
+    
+    /* style 속성의 z-index 를 이용하면 더 위에 배치시키거나 더 아래에 배치시킬 수 있다.
+    z-index 값이 높을수록 위, 작을수록 아래에 배치되며 정수 혹은 자연수 값을 사용한다. */
+
+    
+    /* background: rgba(0, 0, 0, 0.6); */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  .modal-main {
+    /* position:fixed;  */
+    position : fixed;
+    /* background: white; */
+    width: 80%;
+    /* height: auto; */
+    height:80%;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    overflow-y: auto;
+  }
+  .close-btn {
+    
+    /* position : fixed; */
+    width: 100%;
+    height:1.2rme;
+     /* transform: translate(-50%,-50%); */
+    
+  }
+
+  
+  .display-block {
+    display: block;
+    /* overflow-y: scroll; */
+    
+  }
+  
+  .display-none {
+    display: none;
+    /* overflow-y: hidden; */
+    
+  }
+
+
+  @media screen and (min-width:320px) and (max-width:800px) and (orientation: portrait){
+    .Info_Detail{
+      /* width: 30%; */
+      /* display: flex; */
+      font-size : 2rem;
+      flex-direction: column;
+            
+      /* justify-content: space-between;  */
+      
+    }
+    .Info_Detail_c{
+      margin-bottom: 1rem;
+    }
+
+    .Detail_Arrays:first-child{
+      margin-top : 0rem;
+    }
+    
+}
+
+
+

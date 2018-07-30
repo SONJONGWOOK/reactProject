@@ -1,0 +1,17 @@
+@font-face{
+	/* font-family : 'tvNEnjoystoriesMedium';
+	src : url */
+	font-family: "SDMiSaeng";
+    src: url("../asset//SDMiSaeng.woff") format('woff');
+
+
+}
+/* * {
+	font-family: 'SDMiSaeng';
+	font-size : 1.5rem;
+} */
+
+body {
+	font-family: 'SDMiSaeng';
+	font-size : 1.5rem;
+}
