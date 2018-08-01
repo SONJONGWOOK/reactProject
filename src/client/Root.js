@@ -1,13 +1,12 @@
 import React from  'react'
 import { BrowserRouter} from 'react-router-dom'
-import Welcome from '../shared/Welcome'
-
+import MovieRouter from '../shared/MovieRouter'
 
 
 const Root = () => {
     return(
         <BrowserRouter>
-            <Welcome/>
+            <MovieRouter/>
         </BrowserRouter>
     )
 }

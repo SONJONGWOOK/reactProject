@@ -4,7 +4,8 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'development' ,
     entry:{
-        app : './src/index.js',        
+        // movie : './src/movie.js' ,
+        app : './src/resource.js',
         dev : 'webpack-dev-server/client?http://0.0.0.0:3001' , 
         devOnly : 'webpack/hot/only-dev-server',
         babelPolyfill :  'babel-polyfill'
@@ -12,9 +13,12 @@ module.exports = {
                
     },
     output:{
-        path:path.resolve(__dirname , 'public') , 
-        publicPath : '/movie',
-        filename:'app.bundle.js'
+        // path:path.resolve(__dirname , 'public') , 
+        path:path.resolve(__dirname , 'public/bundle') , 
+        publicPath : '/',
+        // publicPath : '/movie',
+        filename:'app.bundle.js',
+        // filename : '[name].bundle.js',
     },
     module :{
         rules : [
@@ -37,7 +41,9 @@ module.exports = {
                           loader : 'url-loader',
                           options : {
                             publicPath : '/asset',
-                            name : '/[hash].[ext]',
+                            name : '../[path][hash].[ext]',
+                            // name : '/[path][hash].[ext]',
+                            // name : '/[hash].[ext]',
                             limit : 10000,
                           }
                           
@@ -49,9 +55,9 @@ module.exports = {
     },
     devServer: {
         host : '0.0.0.0',
-        contentBase: path.join(__dirname, "/public"),
+        contentBase: path.join(__dirname, "/public/bundle"),
         compress: true,
-        publicPath : '/movie',
+        publicPath : '/hot',
         filename:'app.bundle.js' ,
         watchContentBase: true,
         hot : true,

@@ -3,15 +3,21 @@ const webpack = require('webpack');
 
 module.exports = {
     entry:{
-        app : './src/index.js',        
-        babelPolyfill :  'babel-polyfill'
+        // movie : './src/movie.js',
+        app : './src/resource.js',
+        babelPolyfill : 'babel-polyfill'
     
         
     },
     output:{
-        path:path.resolve(__dirname , 'public') , 
-        publicPath : '/movie',
+        // path:path.resolve(__dirname , 'build') , 
+        // publicPath : '/build/',
+        path:path.resolve(__dirname , 'public/bundle') , 
+        publicPath : '/',
+        // publicPath : '/movie',
         filename:'app.bundle.js'
+        // filename:'[name].bundle.js'
+        
     },
     module :{
         rules : [
@@ -44,8 +50,8 @@ module.exports = {
                           loader : 'url-loader',
                           options : {
                             publicPath : '/asset',
-                            name : '[path][hash].[ext]',
-                            // name : '[hash].[ext]',
+                            // name :path.resolve(__dirname , 'public/asset/[hash].[ext]'),
+                            name : '../[path][hash].[ext]',
                             limit : 10000,
                           }
                           
@@ -64,9 +70,6 @@ module.exports = {
         inline: true,
         open : true,
         historyApiFallback: true,
-        proxy: {
-            "**": "http://localhost:3000"
-        }
         
       },
       plugins: [
