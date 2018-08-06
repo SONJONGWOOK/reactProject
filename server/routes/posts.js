@@ -16,6 +16,4 @@ router.get('/read/:id', (req, res) => {
     res.send('You are reading post ' + req.params.id)
 })
 
-
-
 export default router

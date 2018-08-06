@@ -12,11 +12,19 @@ var _webpack = require('webpack');
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
+var _loggerInit = require('./logger/loggerInit');
+
+var _loggerInit2 = _interopRequireDefault(_loggerInit);
+
 var _posts = require('./routes/posts');
 
 var _posts2 = _interopRequireDefault(_posts);
 
 var _reactHotLoader = require('react-hot-loader');
+
+var _test = require('./monitorTest/test');
+
+var _test2 = _interopRequireDefault(_test);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25,45 +33,26 @@ var port = 3000;
 var devPort = 3001;
 var path = require('path');
 
+//log
+
+app.use(_loggerInit2.default.connectLogger(_loggerInit2.default.getLogger('http')));
+
+//서버구동
+var server = app.listen(port, function () {
+    _loggerInit.appLogger.debug("server start " + port);
+});
 //dev서버 기동 hot load 설정해놓은거있음.
 if (process.env.NODE_ENV == 'development') {
-    console.log('devServer');
+    _loggerInit.appLogger.debug('devServer');
     // const conifg = require('/../webpack.config.dev') error
     var config = require('../webpack.config.dev');
     var compiler = (0, _webpack2.default)(config);
     var devServer = new _webpackDevServer2.default(compiler, config.devServer);
 
     devServer.listen(devPort, function () {
-        console.log('devStart' + devPort);
+        _loggerInit.appLogger.debug('devStart' + devPort);
     });
 }
-//log4js
-var log4js = require('log4js');
-log4js.addLayout('json', function (config) {
-    return function (logEvent) {
-        return JSON.stringify(logEvent) + config.separator;
-    };
-});
-log4js.configure(__dirname + "/../log4js.config.json", { reloadSec: 30 });
-
-var logger = log4js.getLogger('app');
-var accesslogger = log4js.getLogger('access');
-
-//엑세스 로거 morgan
-var morgan = require('morgan');
-// app.use(morgan(':method :url :status :res[content-length] - :response-time ms'), (req,res,next) =>{
-//     next()
-// })
-
-app.use(log4js.connectLogger(log4js.getLogger('http')));
-
-// logger.level = 'debug'
-setInterval(function () {
-    logger.debug("test debug");
-    logger.info("test info");
-    logger.warn("test warn");
-    logger.error("test error");
-}, 3000);
 
 app.use('/', _express2.default.static(__dirname + '/../public'));
 
@@ -77,25 +66,24 @@ app.get('/resource*', function (req, res) {
     res.sendFile(path.resolve(__dirname + '/../public/resource/index.html'));
 });
 
-// app.use ('/abc/*' , (req ,res) => {
-//     res.sendfile(path.join(__dirname , '../public/index.html'))
-// })
-
 //이미지 처리용 url
 app.use('/asset/*', function (req, res) {
     var callUrl = req.originalUrl;
     res.sendfile(path.join(__dirname, '../public/' + callUrl));
 });
 
-app.get('/hello', function (req, res) {
-
-    return res.send('test');
-});
-
 // 라우트 설정
+
 
 app.use("/posts", _posts2.default);
 
-var server = app.listen(port, function () {
-    console.log("server start " + port);
-});
+//모니터링 부분
+// import tcp from './monitorTest/tcp'
+// import cpu from './monitorTest/stat'
+// import mem from './monitorTest/mem'
+
+// import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
+
+
+// logger.info("테스트 결과 : "+out)
+(0, _test2.default)();
