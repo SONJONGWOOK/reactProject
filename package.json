@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "babel": "babel server --out-dir build",
     "build": "babel server --out-dir build && webpack --mode development",
     "express": "node ./build/index.js",
     "start": "set NODE_ENV=development&node ./build/index.js",
@@ -17,6 +18,8 @@
     "express": "^4.16.3",
     "file-loader": "^1.1.11",
     "log4js": "^3.0.3",
+    "mongodb": "^3.1.1",
+    "mongoose": "^5.2.7",
     "morgan": "^1.9.0",
     "npm": "^6.2.0",
     "react": "^16.4.1",

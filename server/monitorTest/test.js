@@ -1,8 +1,7 @@
 import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
 
 const out = () =>{
-    let test = '테스트'
-    logger.info(test)
-    return test
+    const a = { "test" : 1  , "inner" : process.memoryUsage() } 
+    return a
 }
 export default out

@@ -20,11 +20,15 @@ var _posts = require('./routes/posts');
 
 var _posts2 = _interopRequireDefault(_posts);
 
-var _reactHotLoader = require('react-hot-loader');
+var _monitors = require('./routes/monitors');
 
-var _test = require('./monitorTest/test');
+var _monitors2 = _interopRequireDefault(_monitors);
 
-var _test2 = _interopRequireDefault(_test);
+var _mongoose = require('mongoose');
+
+var _mongoose2 = _interopRequireDefault(_mongoose);
+
+var _test = require('./models/test');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -78,12 +82,27 @@ app.use('/asset/*', function (req, res) {
 app.use("/posts", _posts2.default);
 
 //모니터링 부분
-// import tcp from './monitorTest/tcp'
-// import cpu from './monitorTest/stat'
-// import mem from './monitorTest/mem'
-
-// import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
 
 
-// logger.info("테스트 결과 : "+out)
-(0, _test2.default)();
+// app.use("/monitor", monitors)
+
+
+_mongoose2.default.Promise = global.Promise;
+_mongoose2.default.connect('mongodb://jsplays.iptime.org:27017/resource').then(function () {
+    return console.log('Successfully connected to mongodb');
+}).catch(function (e) {
+    return console.error(e);
+});
+
+var Memfind = _mongoose2.default.model('memModel', _test.ModelMem, 'mem');
+Memfind.find().sort({ date: -1 }).limit(5).exec(function (err, posts) {
+    _loggerInit.appLogger.error(err);
+    _loggerInit.appLogger.info(posts);
+});
+
+// Memfind.find().sort( { date :-1 }).limit(10)
+
+// Memfind.exec( (err , results ) => {
+//     logger.error(err)
+//     logger.error(results)
+// })

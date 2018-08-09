@@ -1,18 +1,14 @@
 import React from  'react'
 
-const Home = () =>{
+const Resource = () =>{
     return (
         <div>
                    
             <div>
-                <h1>dailyBoxoffice</h1>
-                   일자별 영화 순위 - 어제 날짜 기준으로 스크롤 내리면 7일단위로 리스트 업
+                <h1>리소스 - 대쉬보드 들어갈자리</h1>
+                 
             </div>
-            <div>
-                <h1>weeklyBoxoffice</h1>
-                주간 영화 순위  - 차트로 표현
-            </div>
-
+            
             <div>
                 <h1>스펙</h1>
                     <p>Node.js v8</p>
@@ -30,4 +26,4 @@ const Home = () =>{
     )
 }
 
-export default Home;
+export default Resource;

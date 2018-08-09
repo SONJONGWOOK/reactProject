@@ -5,4 +5,5 @@ import Resource from './client/resourceRoot'
 // import './style.css';
 
 let rootElement = document.getElementById('resource')
+
 ReactDOM1.render(<Resource/>, rootElement)

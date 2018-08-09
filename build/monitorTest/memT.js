@@ -1,27 +1,27 @@
 'use strict';
 
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
 var _loggerInit = require('../logger/loggerInit');
 
 var _loggerInit2 = _interopRequireDefault(_loggerInit);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_loggerInit.appLogger.info('mem init');
+//운영체제확인
+var osType = process.platform;
+console.log('stat테스트');
+_loggerInit.appLogger.debug(osType);
 
-var out = void 0;
-var output = function output() {
-    //운영체제확인
-    var osType = process.platform;
-    if (osType == 'linux') {
+if (osType == 'linux') {
 
-        var exec = require('child_process').exec;
-        // let MemTotal = 0
-        // let MemAvailable = 0
+    var exec = require('child_process').exec;
+
+    var MemTotal = 0;
+    var MemAvailable = 0;
+
+    setInterval(function () {
         var result = void 0;
+
+        // TCP6 정보 웹페이지 커넥션
         exec("cat /proc/meminfo | egrep 'MemTotal|MemAvailable' ", function (error, stdout, stderr) {
             if (error) {
                 _loggerInit.appLogger.debug(stderr);
@@ -35,12 +35,11 @@ var output = function output() {
                 "size": result[2]
 
             };
-            out = {
+            var out = {
                 "osMem": osMem,
-                "nodeMem": process.memoryUsage()
+                "noeMem": process.memoryUsage()
             };
+            _loggerInit.jsonLogger.debug(out);
         });
-    }
-    return out;
-};
-exports.default = output;
+    }, 5000);
+}

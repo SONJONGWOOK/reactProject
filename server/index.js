@@ -50,31 +50,35 @@ app.use ('/asset/*' , (req ,res) => {
 
 // 라우트 설정
 import posts from './routes/posts'
-import { setConfig } from 'react-hot-loader';
 
 app.use("/posts", posts)
 
 //모니터링 부분
-// import tcp from './monitorTest/tcp'
-// import cpu from './monitorTest/stat'
-// import mem from './monitorTest/mem'
+import monitors from './routes/monitors'
 
-// import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
-// import mem  from './monitor/mem'
-// import cpu  from './monitor/stat'
-// import tcp  from './monitor/tcp'
-
-import monitorFactory , {mem , cpu , tcp} from './monitor/monitorFactory'
-// import monitorFactory , {mem} from './monitor/monitorFactory'
-setInterval( ()=> {
-
-    logger.debug(mem())
-    logger.debug(cpu())
-    logger.debug(tcp())
-
-} , 1000 )
+// app.use("/monitor", monitors)
 
 
+import mongoose from 'mongoose'
+mongoose.Promise = global.Promise
+mongoose.connect('mongodb://jsplays.iptime.org:27017/resource')
+.then( ()=> console.log('Successfully connected to mongodb'))
+.catch(e => console.error(e))
+
+import {ModelCpu , ModelMem , ModelTcp} from './models/test';
+
+const Memfind = mongoose.model('memModel' , ModelMem , 'mem')
+Memfind.find().sort({date : -1 }).limit(5).exec( (err , posts) =>{
+    logger.error(err)
+    logger.info(posts)
+})
+
+// Memfind.find().sort( { date :-1 }).limit(10)
+
+// Memfind.exec( (err , results ) => {
+//     logger.error(err)
+//     logger.error(results)
+// })
 
 
 

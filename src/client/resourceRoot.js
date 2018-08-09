@@ -1,8 +1,13 @@
 import React from  'react'
+import { BrowserRouter} from 'react-router-dom'
+import ResourceRouter from '../shared/ResourceRouter'
+
 
 const resourceRoot = () => {
     return(
-      <div>리소스 메인</div>
+      <BrowserRouter>
+        <ResourceRouter/>
+      </BrowserRouter>
     )
 }
 
