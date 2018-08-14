@@ -12,8 +12,7 @@ class App extends Component {
 constructor(props) {
   super(props)
   this._showModal = this._showModal.bind(this);
-}
-  state = {
+  this.state = {
     page  : 1 ,
     scrollH : 0,
     next : false,
@@ -23,6 +22,8 @@ constructor(props) {
     show: false ,
     setModal : true,      
   }
+}
+  
   componentDidMount(){
     // console.log('daily didmount')
     this._getMoives();

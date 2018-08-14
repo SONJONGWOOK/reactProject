@@ -30,6 +30,12 @@ if(process.env.NODE_ENV == 'development'){
 
 app.use ('/' , express.static(__dirname+ '/../public'))
 
+app.all('/*', (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*")
+    res.header("Access-Control-Allow-Headers", "X-Requested-With")
+    next();
+})
+
 //나중에 router.js으로 뺄내용들
 app.get('/movie*', function(req, res) {
     res.sendFile(path.resolve(__dirname + '/../public/movie/index.html'));
@@ -47,39 +53,12 @@ app.use ('/asset/*' , (req ,res) => {
     res.sendfile(path.join(__dirname , '../public/'+callUrl))
 })
 
-
 // 라우트 설정
 import posts from './routes/posts'
 
 app.use("/posts", posts)
 
-//모니터링 부분
+//모니터링 라우트
 import monitors from './routes/monitors'
-
-// app.use("/monitor", monitors)
-
-
-import mongoose from 'mongoose'
-mongoose.Promise = global.Promise
-mongoose.connect('mongodb://jsplays.iptime.org:27017/resource')
-.then( ()=> console.log('Successfully connected to mongodb'))
-.catch(e => console.error(e))
-
-import {ModelCpu , ModelMem , ModelTcp} from './models/test';
-
-const Memfind = mongoose.model('memModel' , ModelMem , 'mem')
-Memfind.find().sort({date : -1 }).limit(5).exec( (err , posts) =>{
-    logger.error(err)
-    logger.info(posts)
-})
-
-// Memfind.find().sort( { date :-1 }).limit(10)
-
-// Memfind.exec( (err , results ) => {
-//     logger.error(err)
-//     logger.error(results)
-// })
-
-
-
+app.use("/monitor", monitors)
 

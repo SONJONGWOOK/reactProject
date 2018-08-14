@@ -25,12 +25,13 @@ var Schema = _mongoose2.default.Schema;
 var mem = new Schema({
     // test : {type : Number , require : true , unique : true},
     memTotal: { type: Number },
-    MemAvailable: { type: Number },
+    memAvailable: { type: Number },
     size: { type: String },
-    nodeRss: { type: Number },
-    nodeHeapTotal: { type: Number },
-    nodeHeapUsed: { type: Number },
-    nodeExternal: { type: Number },
+    rss: { type: Number },
+
+    heapTotal: { type: Number },
+    heapUsed: { type: Number },
+    external: { type: Number },
     date: { type: Date, default: Date.now }
 }, {
     timestamps: true

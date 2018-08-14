@@ -24,12 +24,6 @@ var _monitors = require('./routes/monitors');
 
 var _monitors2 = _interopRequireDefault(_monitors);
 
-var _mongoose = require('mongoose');
-
-var _mongoose2 = _interopRequireDefault(_mongoose);
-
-var _test = require('./models/test');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
@@ -60,6 +54,12 @@ if (process.env.NODE_ENV == 'development') {
 
 app.use('/', _express2.default.static(__dirname + '/../public'));
 
+app.all('/*', function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
 //나중에 router.js으로 뺄내용들
 app.get('/movie*', function (req, res) {
     res.sendFile(path.resolve(__dirname + '/../public/movie/index.html'));
@@ -81,28 +81,6 @@ app.use('/asset/*', function (req, res) {
 
 app.use("/posts", _posts2.default);
 
-//모니터링 부분
+//모니터링 라우트
 
-
-// app.use("/monitor", monitors)
-
-
-_mongoose2.default.Promise = global.Promise;
-_mongoose2.default.connect('mongodb://jsplays.iptime.org:27017/resource').then(function () {
-    return console.log('Successfully connected to mongodb');
-}).catch(function (e) {
-    return console.error(e);
-});
-
-var Memfind = _mongoose2.default.model('memModel', _test.ModelMem, 'mem');
-Memfind.find().sort({ date: -1 }).limit(5).exec(function (err, posts) {
-    _loggerInit.appLogger.error(err);
-    _loggerInit.appLogger.info(posts);
-});
-
-// Memfind.find().sort( { date :-1 }).limit(10)
-
-// Memfind.exec( (err , results ) => {
-//     logger.error(err)
-//     logger.error(results)
-// })
+app.use("/monitor", _monitors2.default);

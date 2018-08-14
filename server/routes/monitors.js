@@ -1,5 +1,6 @@
 import express from 'express'
-import monitorFactory , {mem , cpu , tcp} from '../monitor/monitorFactory'
+import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
+import monitorFactory , {mem , cpu , tcp , memResult , cpuResult} from '../monitor/monitorFactory'
 const path = require('path')
 const router = express.Router()
 
@@ -11,6 +12,60 @@ router.get('/' , (req , res) =>{
         "cpu" : cpu()
     }
     res.send(output)
+})
+
+router.get('/findMem' , (req , res) =>{
+       
+    memResult(10).then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
+     
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+})
+
+router.get('/findMem/:count' , (req , res) =>{
+       
+    let count = req.params.count
+    memResult(count).then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
+     
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+})
+
+router.get('/findCpu' , (req , res) =>{
+       
+    cpuResult(10).then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
+     
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+})
+
+router.get('/findCpu/:count' , (req , res) =>{
+       
+    let count = req.params.count
+    cpuResult(count).then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
+     
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
 })
 
 router.get('/mem' , (req , res) =>{

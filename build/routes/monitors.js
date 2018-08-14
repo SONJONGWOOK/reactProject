@@ -8,6 +8,10 @@ var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
 
+var _loggerInit = require('../logger/loggerInit');
+
+var _loggerInit2 = _interopRequireDefault(_loggerInit);
+
 var _monitorFactory = require('../monitor/monitorFactory');
 
 var _monitorFactory2 = _interopRequireDefault(_monitorFactory);
@@ -24,6 +28,60 @@ router.get('/', function (req, res) {
         "cpu": (0, _monitorFactory.cpu)()
     };
     res.send(output);
+});
+
+router.get('/findMem', function (req, res) {
+
+    (0, _monitorFactory.memResult)(10).then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
+
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
+router.get('/findMem/:count', function (req, res) {
+
+    var count = req.params.count;
+    (0, _monitorFactory.memResult)(count).then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
+
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
+router.get('/findCpu', function (req, res) {
+
+    (0, _monitorFactory.cpuResult)(10).then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
+
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
+router.get('/findCpu/:count', function (req, res) {
+
+    var count = req.params.count;
+    (0, _monitorFactory.cpuResult)(count).then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
+
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
 });
 
 router.get('/mem', function (req, res) {

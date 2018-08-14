@@ -835,7 +835,6 @@ class App extends Component {
         
         {this.state.fatching ? this._renderRank()  : <img className="loadingImg"src={loading}/> }
         <canvas className="basic"  id="rank1" height="600" width="1200"></canvas>
-        
         <canvas className="basic"  id="backLayer" height="600" width="1200"></canvas>
               
       </div>
