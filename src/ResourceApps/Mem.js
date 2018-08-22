@@ -4,7 +4,6 @@ import {_check} from './comm'
 import '../css/resource.css'
 import loading from '../../asset/loading.gif'
 
-
 class Mem extends Component {
     constructor(props) {
       super(props)
@@ -15,8 +14,7 @@ class Mem extends Component {
         fatching : false,
         viewLine : [] , 
         y :  ['memTotal' , 'memAvailable' ,'heapTotal' , 'heapUsed' , 'external' ,  'rss']
-
-      }
+    }
   }
   componentDidMount(){
     
@@ -45,7 +43,6 @@ class Mem extends Component {
   componentWillUnmount() {
     console.log('Mem willunmount')
     clearInterval(this.interval)
-    
   }
 
   _checkBoxOnclick = (key , check) => {
@@ -72,10 +69,9 @@ class Mem extends Component {
     this.setState ({
       data : data ,
       // fatching : true,
-    })  
-    
+    })   
   }
-
+  
   _makeNameSpace =  (axis) => {
 
       return _nameSpace(axis).map( (name , index) =>{
@@ -92,35 +88,68 @@ class Mem extends Component {
                </div>
       })
   }
+  _renderChart = (type) =>{
 
-  _renderChart = () =>{
-    this.nameSpace1 = this._makeNameSpace(['memTotal' , 'memAvailable' ])
-    this.nameSpace2 = this._makeNameSpace(['heapTotal' , 'heapUsed' , 'external' ,  'rss'])
-    
+    if(type == 'board'){
+      this._renderChartBoard()
+
+    }else{
+      this.nameSpace1 = this._makeNameSpace(['memTotal' , 'memAvailable' ])
+      this.nameSpace2 = this._makeNameSpace(['heapTotal' , 'heapUsed' , 'external' ,  'rss'])
+      
+      let axis = {
+          x : 'date',
+          y : ['memTotal' , 'memAvailable' ],
+          // y : this.state.y ,
+          viewY : this.state.viewLine ,
+          yMax : 1000000
+      }
+      _draw("mem1" , this.state.data , axis)
+
+      axis = {
+        x : 'date',
+        y : ['heapTotal' , 'heapUsed' , 'external' ,  'rss'],
+        // y : this.state.y ,
+        viewY : this.state.viewLine ,
+        yMax : 150000
+              
+    }
+    _draw("mem2" , this.state.data , axis)
+  }
+
+  }
+
+  _renderChartBoard = () =>{
+
+    this.nameSpace1 = this._makeNameSpace(['memTotal' , 'memAvailable' , 'heapTotal' , 'heapUsed' , 'external' ,  'rss' ])
+   
     let axis = {
         x : 'date',
-        y : ['memTotal' , 'memAvailable' ],
-        // y : this.state.y ,
+        // y : ['memTotal' , 'memAvailable' ],
+        y : this.state.y ,
         viewY : this.state.viewLine ,
         yMax : 1000000
     }
     _draw("mem1" , this.state.data , axis)
+   }
 
-    axis = {
-      x : 'date',
-      y : ['heapTotal' , 'heapUsed' , 'external' ,  'rss'],
-      // y : this.state.y ,
-      viewY : this.state.viewLine ,
-      yMax : 150000
-             
-  }
-  _draw("mem2" , this.state.data , axis)
-  }
+
   render() {
-    console.log("랜더")
-    return (
-      <div className="resource" style={this.resize}>
+
+    if(this.props.fixSize){
+      return  <div className="resource" style={this.resize}>
+      <div>Memory</div>
+      {this.state.data ? this._renderChart('board') : <img className="loading" src={loading}/>}
+      <div>
+        <div  className="nameSpace" >{this.nameSpace1}</div>
+        <canvas className="chart"  id="mem1" height="600" width="1200"></canvas>
        
+      </div>
+    </div>
+    }else{
+     return (
+       <div className="resource" style={this.resize}>
+        <div>Memory</div>
         {this.state.data ? this._renderChart() : <img className="loading" src={loading}/>}
         <div>
           <div  className="nameSpace" >{this.nameSpace1}</div>
@@ -129,8 +158,8 @@ class Mem extends Component {
           <canvas className="chart"  id="mem2" height="600" width="1200"></canvas>
         </div>
      </div>
-    )
+      )
+    }
   }
 }
-
 export default Mem;

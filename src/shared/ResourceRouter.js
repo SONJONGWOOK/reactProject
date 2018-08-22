@@ -15,7 +15,7 @@ class Welcome extends Component {
             </Navbar.Header>
             <Nav className = "subNav">
                 <NavItem componentClass={Link} href="/resource" to="/resource">INFO</NavItem>
-                <NavItem componentClass={Link} href="/resource/board" to="/resource/board">DASHBOARD</NavItem>
+                <NavItem componentClass={Link} href="/resource/board" to="/resource/board">BOARD</NavItem>
                 <NavItem componentClass={Link} href="/resource/cpu" to="/resource/cpu">CPU</NavItem>
                 <NavItem componentClass={Link} href="/resource/mem" to="/resource/mem">MEM</NavItem>
                 <NavItem componentClass={Link} href="/resource/tcp" to="/resource/tcp">TCP</NavItem>

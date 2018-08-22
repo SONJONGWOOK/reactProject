@@ -163,6 +163,7 @@ class Cpu extends Component {
     return (
       
      <div className="resource" style={this.resize}>
+        <div>CPU </div>
         {this.state.data ? this._renderChart() : <img className="loading" src={loading}/>}
         <div>
         <div className="nameSpace">{this.nameSpace}</div>

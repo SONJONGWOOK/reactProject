@@ -156,8 +156,9 @@ class Tcp extends Component {
     
     return (
       <div className="resource" style={this.resize}>
-      {this.state.data ? this._renderChart() : <img className="loading" src={loading}/> }
-      <div>
+        <div>TCP Socket</div>
+        {this.state.data ? this._renderChart() : <img className="loading" src={loading}/> }
+        <div>
         <div  className="nameSpace">{this.nameSpace}</div> 
         {this.counterDom}
       
