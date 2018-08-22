@@ -60,6 +60,9 @@ const _draw = (canvasId , data , axis) =>{
     ctx.stroke()
     
     axis.y.map( (y , index) =>{
+        
+        if(!axis.viewY.includes(y)) return
+
         _drawLine(data ,axis, index)    
     })
 }
@@ -80,7 +83,7 @@ const _drawLine = (data , axis , yIndex)  =>{
         ctx.moveTo(x,offsetY-((offsetY*(1/6))/2) - y)
         ctx.arc(x, offsetY-((offsetY*(1/6))/2) - y, 1, 0, 2*Math.PI);
         // console.log(index + "   :    "+arrLength +" " + index==arrLength-1)
-        if(index == 0){
+        if(index == 0 && y != 0){
             ctx.fillText( axis.y[yIndex] , x, (offsetY-((offsetY*(1/6))/2) - y)-10 )  
         }
         ctx.closePath()
@@ -103,8 +106,14 @@ const _persent = (maxValue , currentValue) =>{
     return currentValue/maxValue*100
 }
 
+const _nameSpace = (axis)  =>{
+    let out
+    let index = 0
+    return axis.map( (y ) =>{
+       out = { 'name' : y , 'color' : color[index++]}
+       return out
+    })
+}
 
 export {_draw}
-
-// memTotal":949452,"memAvailable":541320,"size":"kB","
-// rss":122441.728,"heapTotal":87781.376,"heapUsed":73815.46,"external":25486.716,
+export {_nameSpace}

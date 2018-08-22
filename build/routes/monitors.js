@@ -84,6 +84,33 @@ router.get('/findCpu/:count', function (req, res) {
     });
 });
 
+router.get('/findTcp', function (req, res) {
+
+    (0, _monitorFactory.tcpResult)(10).then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
+
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
+router.get('/findTcp/:count', function (req, res) {
+
+    var count = req.params.count;
+    (0, _monitorFactory.tcpResult)(count).then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
+
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
 router.get('/mem', function (req, res) {
     res.send((0, _monitorFactory.mem)());
 });

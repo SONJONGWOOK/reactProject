@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.cpuResult = exports.memResult = exports.tcp = exports.cpu = exports.mem = undefined;
+exports.tcpResult = exports.cpuResult = exports.memResult = exports.tcp = exports.cpu = exports.mem = undefined;
 
 var _loggerInit = require('../logger/loggerInit');
 
@@ -92,47 +92,30 @@ setInterval(function () {
             nodeUser: cpuData.nodeCpu.user,
             nodeSystem: cpuData.nodeCpu.system
         });
-        // saveCpu.save().then( () => logger.info("cpu save complete"))
-        saveCpu.save();
-    }
-
-    var tcpData = (0, _tcp2.default)();
-    if (tcpData !== undefined) {
-        // logger.info(tcpData)
-        var saveTcp = new TcpModel({
-            ip: tcpData.ip,
-            port: tcpData.port,
-            st: tcpData.st
-        });
-        // saveTcp.save().then( () => logger.info("tcp save complete"))
-        saveTcp.save();
-    }
-}, 1000);
-
-setInterval(function () {
-    var cpuData = (0, _stat2.default)();
-    if (cpuData !== undefined) {
-        // logger.info(cpuData)
-        var saveCpu = new CpuModel({
-            user: cpuData.osCpu.user,
-            system: cpuData.osCpu.system,
-            nice: cpuData.osCpu.nice,
-            idel: cpuData.osCpu.idel,
-            nodeUser: cpuData.nodeCpu.user,
-            nodeSystem: cpuData.nodeCpu.system
-        });
 
         // saveCpu.save().then( () => logger.info("cpu save complete"))
         saveCpu.save();
     }
 
     var tcpData = (0, _tcp2.default)();
+
     if (tcpData !== undefined) {
+
         // logger.info(tcpData)
         var saveTcp = new TcpModel({
-            ip: tcpData.ip,
-            port: tcpData.port,
-            st: tcpData.st
+            established: tcpData.count.TCP_ESTABLISHED,
+            synSent: tcpData.count.TCP_SYN_SENT,
+            synRecv: tcpData.count.TCP_SYN_RECV,
+            finWait1: tcpData.count.TCP_FIN_WAIT1,
+            finWait2: tcpData.count.TCP_FIN_WAIT2,
+            timeWait: tcpData.count.TCP_TIME_WAIT,
+            close: tcpData.count.TCP_CLOSE,
+            closeWait: tcpData.count.TCP_CLOSE_WAIT,
+            lastAck: tcpData.count.TCP_LISTEN,
+            listen: tcpData.count.TCP_LISTEN,
+            closing: tcpData.count.tCP_CLOSING,
+            count: tcpData.count,
+            data: tcpData.data
         });
         // saveTcp.save().then( () => logger.info("tcp save complete"))
         saveTcp.save();
@@ -147,4 +130,7 @@ var memResult = exports.memResult = function memResult(count) {
 };
 var cpuResult = exports.cpuResult = function cpuResult(count) {
     return (0, _find.cpuFind)(CpuModel, count);
+};
+var tcpResult = exports.tcpResult = function tcpResult(count) {
+    return (0, _find.cpuFind)(TcpModel, count);
 };

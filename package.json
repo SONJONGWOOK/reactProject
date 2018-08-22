@@ -23,6 +23,7 @@
     "morgan": "^1.9.0",
     "npm": "^6.2.0",
     "react": "^16.4.1",
+    "react-bootstrap": "^0.32.3",
     "react-dom": "^16.4.1",
     "react-hot-loader": "^4.3.3",
     "react-router-dom": "^4.3.1"

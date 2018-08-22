@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.cpuFind = exports.memFind = undefined;
+exports.tcpFind = exports.cpuFind = exports.memFind = undefined;
 
 var _loggerInit = require('../logger/loggerInit');
 
@@ -52,6 +52,11 @@ var memFind = function memFind(MemModel, count) {
 var cpuFind = function cpuFind(CpuModel, count) {
     return CpuModel.find().sort({ date: -1 }).limit(count);
 };
+
+var tcpFind = function tcpFind(TcpModel, count) {
+    return TcpModel.find().sort({ date: -1 }).limit(count);
+};
 exports.memFind = memFind;
 exports.cpuFind = cpuFind;
+exports.tcpFind = tcpFind;
 //

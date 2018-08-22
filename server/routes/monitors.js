@@ -1,6 +1,6 @@
 import express from 'express'
 import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
-import monitorFactory , {mem , cpu , tcp , memResult , cpuResult} from '../monitor/monitorFactory'
+import monitorFactory , {mem , cpu , tcp , memResult , cpuResult , tcpResult} from '../monitor/monitorFactory'
 const path = require('path')
 const router = express.Router()
 
@@ -61,6 +61,34 @@ router.get('/findCpu/:count' , (req , res) =>{
         return  posts
     }).then((findReuslt) => {
      
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+})
+
+
+router.get('/findTcp' , (req , res) =>{
+       
+    tcpResult(10).then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
+     
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+})
+
+router.get('/findTcp/:count' , (req , res) =>{
+       
+    let count = req.params.count
+    tcpResult(count).then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
+    
         res.send(findReuslt)
     }).catch( (err) =>{
         logger.error(err)

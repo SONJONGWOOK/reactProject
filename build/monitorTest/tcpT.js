@@ -32,6 +32,7 @@ if (osType == 'linux') {
             var port = void 0;
             var st = void 0;
             result.forEach(function (element, index) {
+
                 if (element.includes(':0BB8') || element.includes(':0BB9')) {
                     if (parseInt(result[index + 2].trim(), 16) == 0 || parseInt(result[index + 1].trim(), 16) == 0) {
                         return;

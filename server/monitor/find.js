@@ -41,6 +41,11 @@ const memFind = (MemModel , count) =>{
 const cpuFind = (CpuModel, count) =>{
     return CpuModel.find().sort({date : -1 }).limit(count)
 }
+
+const tcpFind = (TcpModel, count) =>{
+    return TcpModel.find().sort({date : -1 }).limit(count)
+}
 export {memFind}
 export {cpuFind}
+export {tcpFind}
 // 

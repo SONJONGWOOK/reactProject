@@ -1,17 +1,16 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.ModelTcp = exports.ModelCpu = exports.ModelMem = undefined;
 
-var _mongoose = require("mongoose");
+var _mongoose = require('mongoose');
 
 var _mongoose2 = _interopRequireDefault(_mongoose);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log("###mongooseModel");
 _mongoose2.default.Promise = global.Promise;
 
 // 커넥션
@@ -50,9 +49,22 @@ var cpu = new Schema({
 });
 
 var tcp = new Schema({
-    ip: { type: String },
-    port: { type: String },
-    st: { type: String },
+    established: { type: Number },
+    synSent: { type: Number },
+    synRecv: { type: Number },
+    finWait1: { type: Number },
+    finWait2: { type: Number },
+    timeWait: { type: Number },
+    close: { type: Number },
+    closeWait: { type: Number },
+    lastAck: { type: Number },
+    listen: { type: Number },
+    closing: { type: Number },
+    count: {},
+    data: { type: Array },
+    // ip : { type : Array},
+    // port : { type : Array},
+    // st : {type : Array},
     date: { type: Date, default: Date.now }
 }, {
     timestamps: true

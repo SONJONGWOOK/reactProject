@@ -1,0 +1,12 @@
+.mainNav{
+    width: 20%;
+    flex-direction: row;
+    justify-content : space-around;
+}
+.subNav{
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    justify-content : space-around;
+
+}

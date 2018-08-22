@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-console.log("###mongooseModel")
+
 mongoose.Promise = global.Promise
 
 // 커넥션
@@ -42,9 +42,22 @@ const cpu = new Schema ({
 )
 
 const tcp = new Schema ({
-    ip : { type : String},
-    port : { type : String},
-    st : {type : String},
+    established : {type : Number} ,
+    synSent : {type : Number} ,
+    synRecv : {type : Number} ,
+    finWait1 : {type : Number} ,
+    finWait2 : {type : Number} ,
+    timeWait : {type : Number} ,
+    close : {type : Number} ,
+    closeWait : {type : Number} ,
+    lastAck : {type : Number} ,
+    listen : {type : Number} ,
+    closing : {type : Number} ,
+    count : {},
+    data : { type : Array},
+    // ip : { type : Array},
+    // port : { type : Array},
+    // st : {type : Array},
     date : { type : Date , default : Date.now}
     },
     {

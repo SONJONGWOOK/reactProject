@@ -1,0 +1,81 @@
+.board{
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+.chart{
+    width: 50em;
+    height: 25em;
+}
+
+.nameSpace {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.outerCounter{
+    width: 50em;
+    display: flex;
+    flex-direction: row;
+}
+
+.nameSpaceCheck{
+    padding-right : 3rem;
+    cursor: pointer;
+}
+
+.subNameSpace{
+    display:inline;
+}
+
+.loading{
+    position: absolute; 
+    left : 50%;
+    top : 50%;
+}
+.outerCounter{
+    display: flex;
+    text-align: center;
+}
+.counter {
+    display: flex;
+    font-size: 5em;
+    flex-direction: column;
+    border-style: outset;
+    width: 30%;
+}
+.innerCounter{
+    align-items: center;
+    font-size: 0.2em;
+   
+}
+
+#nameSpace{
+    display: flex;  
+    /* float : left;   */
+}
+
+@media screen and (min-width:320px) and (max-width:800px){
+    .chart{
+        width:125%;
+        height: 125%;
+        /* max-width: 150%; */
+        /* max-height: 150%; */
+        
+    }
+    .nameSpace {
+        width:100%;
+        display: flex;
+        flex-direction: column; 
+    }
+    
+    .outerCounter{
+        width:20%; 
+        display: flex;
+        flex-direction: column; 
+    }
+    .counter {
+        font-size: 3em;
+        width: 30%;
+    }
+}
