@@ -1,6 +1,8 @@
 import express from 'express'
 import WebpackDevServer from 'webpack-dev-server'
 import webpack from 'webpack'
+import "babel-polyfill"
+import "isomorphic-fetch"
 
 const app = express()
 const port = 3000;

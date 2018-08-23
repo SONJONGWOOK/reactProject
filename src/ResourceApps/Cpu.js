@@ -113,7 +113,6 @@ class Cpu extends Component {
     }) 
   }
 
-
   _getData = async () => {
     
     // console.log(preData)
@@ -126,7 +125,6 @@ class Cpu extends Component {
       data : data,
     })  
   }
-
   _makeNameSpace =  (axis) => {
     
     this.nameSpace = _nameSpace(axis).map( (name , index) =>{
@@ -161,7 +159,7 @@ class Cpu extends Component {
   render() {
     // console.log("랜더")
     return (
-      
+
      <div className="resource" style={this.resize}>
         <div>CPU </div>
         {this.state.data ? this._renderChart() : <img className="loading" src={loading}/>}
@@ -170,9 +168,6 @@ class Cpu extends Component {
           <canvas className="chart" id="cpu1" height="600" width="1200"></canvas>
         </div>
      </div>
-     
-     
-     
     )
   }
 }

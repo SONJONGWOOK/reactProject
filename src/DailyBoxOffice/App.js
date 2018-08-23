@@ -25,11 +25,8 @@ constructor(props) {
 }
   
   componentDidMount(){
-    // console.log('daily didmount')
     this._getMoives();
     window.addEventListener('scroll', this._handleScroll)
-    // document.addEventListener('scroll', this._handleScroll);
-  
   }
 
   componentWillUnmount() {
@@ -250,35 +247,22 @@ constructor(props) {
     </div>
   }
   
-  render() {
-    
+  render() {  
     return (
       <div id="MainPage">
-      <p className="headerTitle">{'DailyBoxOfficeList'}</p>
-      <div>
-      
-
-      </div>
+        <p className="headerTitle">{'DailyBoxOfficeList'}</p>
            
       <div className="App">
                 
-                <Modal show={this.state.show} 
-                      handleClose={this._hideModal} 
-                      movieCd={this.state.setModal.movieCd}
-                      poster={this.state.setModal.poster}
-                ></Modal>
-       
-          {this.state.movies ?   this._renderMovies() : <img src={loading}/> }
-          
-          {/* <img src="/src/gif-load.gif" width="100" height="100" /> */}
-          {/* 위와 같은 문법은 다음과같다.
-             <Movie title={moives[0].title} poster={moives[0].poster}/> 0~2까지 배열길이 만큼 돌려줌 이터레이터와 비슷한 개념일듯 이와 같은문법임
-          */}
-          
+          <Modal show={this.state.show} 
+                handleClose={this._hideModal} 
+                movieCd={this.state.setModal.movieCd}
+                poster={this.state.setModal.poster}
+          ></Modal>       
+        {this.state.movies ?   this._renderMovies() : <img src={loading}/> }
+        </div>
        </div>
-       
-       </div>
-    );
+    )
   }
 
  

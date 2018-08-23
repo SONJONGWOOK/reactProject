@@ -1,6 +1,6 @@
 import React from  'react'
 import '../css/resource.css'
-import { Well , Table } from 'react-bootstrap'
+
 const Resource = () =>{
     return (
         <div>

@@ -12,6 +12,10 @@ var _webpack = require('webpack');
 
 var _webpack2 = _interopRequireDefault(_webpack);
 
+require('babel-polyfill');
+
+require('isomorphic-fetch');
+
 var _loggerInit = require('./logger/loggerInit');
 
 var _loggerInit2 = _interopRequireDefault(_loggerInit);

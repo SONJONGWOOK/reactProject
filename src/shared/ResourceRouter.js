@@ -22,10 +22,7 @@ class Welcome extends Component {
            </Nav>
          </Navbar>
 
-          /* <Nav pullRight>
-            <NavItem componentClass={Link} href="/resource" to="/resource">Home</NavItem>
-            <NavItem componentClass={Link} href="/resource/cpu" to="/resource/cpu">Book Inv</NavItem>
-           </Nav> */
+   
   
     }
     render() {
@@ -33,17 +30,14 @@ class Welcome extends Component {
         return(
             <div className="resourceRouter">
                 <div>{this._navInstace()}</div>
-                
-               
-                
+           
                 <div></div>
                     <Route exact path="/resource" component = {ResourceHome} />
                     <Route path="/resource/board/" component ={Board}/>
                     <Route path="/resource/cpu/" component ={Cpu}/>
                     <Route path="/resource/mem/" component ={Mem}/>
                     <Route path="/resource/tcp/" component ={Tcp}/>
-               
-                
+
             </div>
         )
     }

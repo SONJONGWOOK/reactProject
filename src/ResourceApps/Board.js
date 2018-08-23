@@ -5,7 +5,6 @@ import '../css/resource.css'
 class Board extends Component {
 
     render() {
-        
         return(
             <div className="board">
                 <Cpu fixSize={true}></Cpu>

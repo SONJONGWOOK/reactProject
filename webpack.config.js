@@ -3,20 +3,18 @@ const webpack = require('webpack');
 
 module.exports = {
     entry:{
-        // movie : './src/movie.js',
-        app : './src/resource.js',
+        movie : './src/movie.js',
+        resource : './src/resource.js',
         babelPolyfill : 'babel-polyfill'
     
         
     },
     output:{
-        // path:path.resolve(__dirname , 'build') , 
-        // publicPath : '/build/',
+ 
         path:path.resolve(__dirname , 'public/bundle') , 
         publicPath : '/',
-        // publicPath : '/movie',
-        filename:'app.bundle.js'
-        // filename:'[name].bundle.js'
+        // filename:'app.bundle.js'
+        filename:'[name].bundle.js'
         
     },
     module :{
@@ -27,7 +25,7 @@ module.exports = {
                use: {
                 loader: "babel-loader",
                 options: {
-                    presets: ['env' ,'react' , "react-latest"]
+                    presets: ['env' ,'react' , "react-latest" ]
                   }
                 }
                

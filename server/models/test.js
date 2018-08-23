@@ -11,12 +11,10 @@ mongoose.Promise = global.Promise
 const Schema = mongoose.Schema
 
 const mem = new Schema ({
-    // test : {type : Number , require : true , unique : true},
     memTotal : { type : Number},
     memAvailable : { type : Number } ,
     size : {type : String},
     rss :  {type : Number },
-    
     heapTotal :  {type : Number },
     heapUsed :  {type : Number },
     external :  {type : Number },
