@@ -3,6 +3,7 @@ const webpack = require('webpack');
 
 module.exports = {
     entry:{
+        index : './src/index.js',
         movie : './src/movie.js',
         resource : './src/resource.js',
         babelPolyfill : 'babel-polyfill'
@@ -10,7 +11,8 @@ module.exports = {
         
     },
     output:{
- 
+        // path:path.resolve(__dirname , 'build') , 
+        // publicPath : '/build/',
         path:path.resolve(__dirname , 'public/bundle') , 
         publicPath : '/',
         // filename:'app.bundle.js'

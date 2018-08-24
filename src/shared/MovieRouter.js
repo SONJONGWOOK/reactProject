@@ -31,13 +31,8 @@ class Welcome extends Component {
         return(
             <div className="resourceRouter">
                 <div>{this._navInstace()}</div>
-                
-                {/* <h1>Welcome Movie page</h1>
-                 <ul>
-                    <li><NavLink exact to="/movie" activeStyle={highlight}>Info</NavLink></li>
-                    <li><NavLink to="/movie/daily/" activeStyle={highlight}>DailyBoxoffice</NavLink></li>
-                    <li><NavLink to="/movie/weekly/" activeStyle={highlight}>WeeklyBoxofficeChart</NavLink></li>
-                 </ul> */}
+               
+             
                      
                 <Route exact path="/movie" component = {MovieHome} />
                 <Route path="/movie/daily/" component ={Daily}/>

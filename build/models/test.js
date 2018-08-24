@@ -22,12 +22,10 @@ _mongoose2.default.Promise = global.Promise;
 var Schema = _mongoose2.default.Schema;
 
 var mem = new Schema({
-    // test : {type : Number , require : true , unique : true},
     memTotal: { type: Number },
     memAvailable: { type: Number },
     size: { type: String },
     rss: { type: Number },
-
     heapTotal: { type: Number },
     heapUsed: { type: Number },
     external: { type: Number },

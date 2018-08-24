@@ -20,10 +20,7 @@ class Welcome extends Component {
                 <NavItem componentClass={Link} href="/resource/mem" to="/resource/mem">MEM</NavItem>
                 <NavItem componentClass={Link} href="/resource/tcp" to="/resource/tcp">TCP</NavItem>
            </Nav>
-         </Navbar>
-
-   
-  
+         </Navbar> 
     }
     render() {
         
@@ -42,7 +39,4 @@ class Welcome extends Component {
         )
     }
 }
-
-
-
 export default Welcome;

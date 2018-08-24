@@ -111,7 +111,7 @@ class Mem extends Component {
         y : ['heapTotal' , 'heapUsed' , 'external' ,  'rss'],
         // y : this.state.y ,
         viewY : this.state.viewLine ,
-        yMax : 150000
+        yMax : 200000
               
     }
     _draw("mem2" , this.state.data , axis)
