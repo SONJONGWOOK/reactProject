@@ -57,6 +57,19 @@ router.get('/findMem/:count', function (req, res) {
     });
 });
 
+router.get('/findMemMax', function (req, res) {
+
+    (0, _monitorFactory.memMaxResult)().then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
+
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
 router.get('/findCpu', function (req, res) {
 
     (0, _monitorFactory.cpuResult)(10).then(function (posts) {
@@ -104,6 +117,18 @@ router.get('/findTcp/:count', function (req, res) {
         return posts;
     }).then(function (findReuslt) {
 
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
+router.get('/findTcpCount', function (req, res) {
+
+    (0, _monitorFactory.tcpCount)().then(function (posts) {
+        return posts;
+    }).then(function (findReuslt) {
         res.send(findReuslt);
     }).catch(function (err) {
         _loggerInit.appLogger.error(err);

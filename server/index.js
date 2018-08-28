@@ -64,3 +64,5 @@ app.use("/posts", posts)
 import monitors from './routes/monitors'
 app.use("/monitor", monitors)
 
+//스케쥴러
+import dailyProcess from './schedule/dailyProcess'

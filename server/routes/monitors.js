@@ -1,6 +1,6 @@
 import express from 'express'
 import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
-import monitorFactory , {mem , cpu , tcp , memResult , cpuResult , tcpResult} from '../monitor/monitorFactory'
+import monitorFactory , {mem , cpu , tcp , memResult , cpuResult , tcpResult, tcpCount, memMaxResult} from '../monitor/monitorFactory'
 const path = require('path')
 const router = express.Router()
 
@@ -31,6 +31,19 @@ router.get('/findMem/:count' , (req , res) =>{
        
     let count = req.params.count
     memResult(count).then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
+     
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+})
+
+router.get('/findMemMax' , (req , res) =>{
+       
+    memMaxResult().then((posts) =>{
         return  posts
     }).then((findReuslt) => {
      
@@ -89,6 +102,18 @@ router.get('/findTcp/:count' , (req , res) =>{
         return  posts
     }).then((findReuslt) => {
     
+        res.send(findReuslt)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+})
+
+router.get('/findTcpCount' , (req , res) =>{
+    
+    tcpCount().then((posts) =>{
+        return  posts
+    }).then((findReuslt) => {
         res.send(findReuslt)
     }).catch( (err) =>{
         logger.error(err)

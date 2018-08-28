@@ -3,6 +3,7 @@ import {_draw , _nameSpace}  from '../Chartlib/line'
 import {_check} from './comm'
 import '../css/resource.css'
 import loading from '../../asset/loading.gif'
+import { Panel } from 'react-bootstrap'
 
 class Mem extends Component {
     constructor(props) {
@@ -17,16 +18,6 @@ class Mem extends Component {
     }
   }
   componentDidMount(){
-    
-    if(this.props.fixSize == true){
-
-      const divStyle = {
-        fontSize : '16px'     
-      }
-      this.resize = divStyle;
-      
-    }
-
     let initViewLine = this.state.y.map( (key) => {
       return key
     })
@@ -55,9 +46,9 @@ class Mem extends Component {
   }
 
   _callApi = () =>{
-    // return  fetch('http://jsplays.iptime.org:3000/monitor/findMem/120')
+    return  fetch('http://jsplays.iptime.org:3000/monitor/findMem/120')
     // return  fetch('http://localhost:3001/monitor/findMem/120')
-    return  fetch('http://localhost:3000/monitor/findMem/120')
+    // return  fetch('http://localhost:3000/monitor/findMem/120')
     .then(data => data.json())
     //.then(jsonData => console.log(jsonData))
     .then(jsonData => jsonData)
@@ -88,9 +79,9 @@ class Mem extends Component {
                </div>
       })
   }
-  _renderChart = (type) =>{
+  _renderChart = () =>{
 
-    if(type == 'board'){
+    if(this.props.fixSize){
       this._renderChartBoard()
 
     }else{
@@ -136,30 +127,26 @@ class Mem extends Component {
 
   render() {
 
-    if(this.props.fixSize){
-      return  <div className="resource" style={this.resize}>
-      <div>Memory</div>
-      {this.state.data ? this._renderChart('board') : <img className="loading" src={loading}/>}
-      <div>
-        <div  className="nameSpace" >{this.nameSpace1}</div>
-        <canvas className="chart"  id="mem1" height="600" width="1200"></canvas>
-       
-      </div>
-    </div>
-    }else{
-     return (
-       <div className="resource" style={this.resize}>
-        <div>Memory</div>
+    return (
+      
+      <div className={this.props.fixSize ? "resource resize" : "resource" }>
         {this.state.data ? this._renderChart() : <img className="loading" src={loading}/>}
-        <div>
-          <div  className="nameSpace" >{this.nameSpace1}</div>
-          <canvas className="chart"  id="mem1" height="600" width="1200"></canvas>
-          <div className="nameSpace" >{this.nameSpace2}</div>
-          <canvas className="chart"  id="mem2" height="600" width="1200"></canvas>
-        </div>
+        <Panel bsStyle="info">
+        <Panel.Heading>
+            <Panel.Title componentClass="h1" className="header">MEM</Panel.Title>
+          </Panel.Heading>
+          <Panel.Body>
+          <div className={this.props.fixSize ? "nameSpace display-none" : "nameSpace"}>{this.nameSpace1}</div>
+            <div className="canvas">  <canvas className="chart"  id="mem1" height="600" width="1200"></canvas></div>
+            <div className={this.props.fixSize ? "nameSpace display-none" : "nameSpace"}>{this.nameSpace2}</div>
+            <div className={this.props.fixSize ? "canvas display-none" : "canvas"   }><canvas className="chart" id="mem2" height="600" width="1200"></canvas></div>
+          </Panel.Body>
+        </Panel>
+      
+    
      </div>
       )
     }
-  }
+  
 }
 export default Mem;

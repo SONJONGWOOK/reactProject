@@ -3,6 +3,9 @@ import {_draw , _nameSpace}  from '../Chartlib/line'
 import {_check , _numCounter } from './comm'
 import '../css/resource.css'
 import loading from '../../asset/loading.gif'
+import { Panel } from 'react-bootstrap'
+
+
 
 class Tcp extends Component {
 
@@ -20,6 +23,7 @@ class Tcp extends Component {
   }
 
   componentDidMount(){
+   
 
     if(this.props.fixSize == true){
 
@@ -29,7 +33,6 @@ class Tcp extends Component {
       this.resize = divStyle;
       
     }
-
 
     let initViewLine = this.state.y.map( (key) => {
       return key
@@ -65,7 +68,7 @@ class Tcp extends Component {
 
     let result = []
     let postData 
-    let output = fetch('http://localhost:3000/monitor/findTcp/'+count)
+    let output = fetch('http://jsplays.iptime.org:3000/monitor/findTcp/'+count)
     .then(data => data.json())
     .then(jsonData => {
       result = jsonData
@@ -123,7 +126,7 @@ class Tcp extends Component {
     let last = this.state.data[0]
     this.count1 = last.established + last.synSent + last.synRecv + last.listen
     this.count2 = last.timeWait + last.close + last.closeWait
-   
+        
    this.counterDom =  <div className ="outerCounter">
     <div className="counter" id="count1">
       <span>{this.count1}</span>
@@ -148,29 +151,29 @@ class Tcp extends Component {
     }
     _draw("tcp1" , this.state.data , axis)
     this._dataCounter()
-   
+    
   }
-
  
   render() {
     
     return (
-      <div className="resource" style={this.resize}>
-        <div>TCP Socket</div>
+      <div className={this.props.fixSize ? "resource resize" : "resource" }>
         {this.state.data ? this._renderChart() : <img className="loading" src={loading}/> }
-        <div>
-        <div  className="nameSpace">{this.nameSpace}</div> 
-        {this.counterDom}
-      
-
-        <div>
-          <canvas className="chart" id="tcp1" height="600" width="1200"></canvas>
-        </div>
-        
-      </div>
+        <Panel bsStyle="success">
+        <Panel.Heading>
+        <Panel.Title componentClass="h1" className="header">TCP Socket</Panel.Title>
+          </Panel.Heading>
+          <Panel.Body>
+            <div className={this.props.fixSize ? "nameSpace display-none" : "nameSpace"}>{this.nameSpace}</div>
+            <div className={this.props.fixSize  ? "display-none" : ""}>  {this.counterDom} </div>
+            <div className="canvas"><canvas className="chart" id="tcp1" height="600" width="1200"></canvas></div>
+          </Panel.Body>
+        </Panel>
    </div>
     )
   }
 }
 
 export default Tcp;
+
+

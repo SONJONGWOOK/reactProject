@@ -28,6 +28,10 @@ var _monitors = require('./routes/monitors');
 
 var _monitors2 = _interopRequireDefault(_monitors);
 
+var _dailyProcess = require('./schedule/dailyProcess');
+
+var _dailyProcess2 = _interopRequireDefault(_dailyProcess);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var app = (0, _express2.default)();
@@ -88,3 +92,5 @@ app.use("/posts", _posts2.default);
 //모니터링 라우트
 
 app.use("/monitor", _monitors2.default);
+
+//스케쥴러

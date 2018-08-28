@@ -3,6 +3,15 @@ import {_draw , _nameSpace}  from '../Chartlib/line'
 import {_check} from './comm'
 import '../css/resource.css'
 import loading from '../../asset/loading.gif'
+import { Panel } from 'react-bootstrap'
+import {getCpu , setCpu}from '../../server/utils/const'
+
+// global.maxSystem = 0
+// global.maxUser = 0
+
+let maxUser 
+let maxSystem  
+
 
 class Cpu extends Component {
 
@@ -19,10 +28,13 @@ class Cpu extends Component {
 
   componentDidMount(){
     
+    maxUser  = getCpu().user == undefined ? 0 : getCpu().user
+    maxSystem  = getCpu().system == undefined ? 0 : getCpu().system
+    
     if(this.props.fixSize == true){
 
       const divStyle = {
-        fontSize : '16px'     
+        fontSize : '20px'     
       }
       this.resize = divStyle;
       
@@ -44,6 +56,7 @@ class Cpu extends Component {
 
   componentWillUnmount() {
     console.log('Mem willunmount')
+    setCpu(maxUser , maxSystem)
     clearInterval(this.interval)
 
   }
@@ -67,7 +80,7 @@ class Cpu extends Component {
     let result = []
     let postData 
     
-    let output = fetch('http://localhost:3000/monitor/findCpu/'+count)
+    let output = fetch('http://jsplays.iptime.org:3000/monitor/findCpu/'+count)
     .then(data => data.json())
     .then(jsonData => {
         jsonData.map( (cpu , index) => {
@@ -78,10 +91,13 @@ class Cpu extends Component {
             let pre = parseInt(cpu.user) + parseInt(cpu.system) + parseInt(cpu.nice) + parseInt(cpu.idel)
             user = ( postData.user -parseInt(cpu.user) ) /  ( post - pre)
             system = ( postData.system -parseInt(cpu.system) ) /  ( post - pre)
-            
             // if(user !== 0) 
             result.push( {'user' : user*100  , 'system' : system*100 , 'date' : cpu.date  }  )
+                                  
+            if(parseInt(maxUser) <  parseInt(user*100) ) maxUser = user*100
+            if(parseInt(maxSystem) <  parseInt(system*100) ) maxSystem = system*100
 
+         
           }
                    
           postData ={  'user' :   parseInt(cpu.user) ,
@@ -114,12 +130,9 @@ class Cpu extends Component {
   }
 
   _getData = async () => {
-    
-    // console.log(preData)
-    // preData.splice(preData.length-1 , 1)
-    // let count = 60 - (preData.length)
-    // console.log("겟" + count)
-    // const data = await this._callApi(count*2)
+
+    console.log(getCpu())
+            
     let data = await this._callApi('addData' , 2)
     this.setState ({
       data : data,
@@ -159,17 +172,25 @@ class Cpu extends Component {
   render() {
     // console.log("랜더")
     return (
-
-     <div className="resource" style={this.resize}>
-        <div>CPU </div>
+      <div className={this.props.fixSize ? "resource resize" : "resource" }>
         {this.state.data ? this._renderChart() : <img className="loading" src={loading}/>}
-        <div>
-        <div className="nameSpace">{this.nameSpace}</div>
-          <canvas className="chart" id="cpu1" height="600" width="1200"></canvas>
-        </div>
+        <Panel bsStyle="primary">
+        <Panel.Heading>
+          <Panel.Title componentClass="h1" className="header">CPU</Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          
+          <div className={this.props.fixSize ? "nameSpace display-none" : "nameSpace"}>{this.nameSpace}</div>
+          <div className="canvas"><canvas className="chart" id="cpu1" height="600" width="1200"></canvas></div>
+        </Panel.Body>
+      </Panel>
      </div>
     )
   }
 }
 
 export default Cpu;
+export const maxValue = () => {
+            return { user : maxUser ,
+                      system : maxSystem}
+}

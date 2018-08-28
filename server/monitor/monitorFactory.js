@@ -4,7 +4,8 @@ import cpu  from './stat'
 import tcp  from './tcp'
 import mongoose from 'mongoose'
 import {ModelCpu , ModelMem , ModelTcp} from '../models/test';
-import {memFind , cpuFind , tcpFind} from './find'
+import {memFind , cpuFind , tcpFind ,tcpAllCount , memMax} from './find'
+import {cpuRemove , tcpRemove , memRemove} from './remove'
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://jsplays.iptime.org:27017/resource')
@@ -15,6 +16,8 @@ mongoose.connect('mongodb://jsplays.iptime.org:27017/resource')
 const MemModel = mongoose.model('MemInput' , ModelMem , 'mem')
 const CpuModel = mongoose.model('CpuInput' , ModelCpu , 'cpu')
 const TcpModel = mongoose.model('TcpInput' , ModelTcp , 'tcp')
+
+
 
 setInterval( ()=> { 
     let memData = mem()
@@ -98,10 +101,32 @@ setInterval( ()=> {
     }
 } , 1000 )
 
+// let dt = new Date();
+// dt.setDate(dt.getDate()-1);  
+// let month = dt.getMonth()+1
+// let day = dt.getDate()
+// month = month > 9 ?  String(month) : "0"+String(month)
+// day = day > 9 ?  String(day) : "0"+String(day)
+// let targetDay = dt.getFullYear()+"-"+month+"-"+day
+// logger.debug(targetDay)
+// const testModel = mongoose.model('Cpuremove' , ModelCpu , 'test')
+
+// testModel.remove({ "date" :  {"$lt": new Date(targetDay)  } })
+// .then((findReuslt) => {
+//     logger.debug(findReuslt)
+// }).catch( (err) =>{
+//     logger.error(err)
+    
+// })
 
 export {mem}
 export {cpu}
 export {tcp}
 export const memResult = (count) => { return memFind(MemModel,count) }
 export const cpuResult = (count) => { return cpuFind(CpuModel,count) }
-export const tcpResult = (count) => { return cpuFind(TcpModel,count) }
+export const tcpResult = (count) => { return tcpFind(TcpModel,count) }
+export const tcpCount = () => { return tcpAllCount(TcpModel) }
+export const memMaxResult = () => { return memMax(MemModel) }
+export const removeTcp = () => {return tcpRemove(TcpModel)}
+export const removeCpu = () => {return cpuRemove(CpuModel)}
+export const removeMem = () => {return memRemove(MemModel)}

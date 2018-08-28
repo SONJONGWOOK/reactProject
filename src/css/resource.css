@@ -1,5 +1,13 @@
-#resourceInfo{
-    /* background:#f8f8f8; */
+.resource{
+   background: white;
+   min-height: 100%;
+}
+.resize{
+    font-size : 1.1rem;
+}
+.header{
+    text-align: center;
+    color : white;    
 }
 
 .resourceHome{
@@ -19,14 +27,26 @@
     /* text-align: center; */
     width:30%
 }
+.canvas{
+    text-align: center;
+}
 
 .board{
     display: flex;
-    width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-between;
+    /* text-align: center; */
+}
+.boardBody{
+  width: 50%;
+    
 }
 .chart{
+    width: 50em;
+    height: 25em;
+}
+canvas{
     width: 50em;
     height: 25em;
 }
@@ -35,9 +55,11 @@
     width: 100%;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 .outerCounter{
-    width: 50em;
+    /* width: 50em; */
     display: flex;
     flex-direction: row;
 }
@@ -59,6 +81,8 @@
 .outerCounter{
     display: flex;
     text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 .counter {
     display: flex;
@@ -77,6 +101,56 @@
     display: flex;  
     /* float : left;   */
 }
+
+.PBoard{
+    height: 100%;
+}
+.outerBoard{
+    display: flex;
+
+}
+.innerCpu{
+    display: flex;
+    width: 50%;
+    height: 33%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    border: 2px solid #E6E6E6;
+    margin :20px 10px 20px 10px;
+    
+}
+.innerMem{
+    display: flex;
+    width: 50%;
+    height: 33%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    border: 2px solid #E6E6E6;
+    margin :20px 10px 20px 10px;
+}
+
+.innerTcp{
+    display: flex;
+    width: 12.5%;
+    height: 33%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    border: 2px solid #E6E6E6;
+    margin :20px 10px 20px 10px;
+}
+
+.display-none {
+    display: none;
+    /* overflow-y: hidden; */
+    
+}
+
 
 @media screen and (min-width:320px) and (max-width:800px){
     .chart{

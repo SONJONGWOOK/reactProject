@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.tcpResult = exports.cpuResult = exports.memResult = exports.tcp = exports.cpu = exports.mem = undefined;
+exports.removeMem = exports.removeCpu = exports.removeTcp = exports.memMaxResult = exports.tcpCount = exports.tcpResult = exports.cpuResult = exports.memResult = exports.tcp = exports.cpu = exports.mem = undefined;
 
 var _loggerInit = require('../logger/loggerInit');
 
@@ -28,6 +28,8 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 var _test = require('../models/test');
 
 var _find = require('./find');
+
+var _remove = require('./remove');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -122,6 +124,24 @@ setInterval(function () {
     }
 }, 1000);
 
+// let dt = new Date();
+// dt.setDate(dt.getDate()-1);  
+// let month = dt.getMonth()+1
+// let day = dt.getDate()
+// month = month > 9 ?  String(month) : "0"+String(month)
+// day = day > 9 ?  String(day) : "0"+String(day)
+// let targetDay = dt.getFullYear()+"-"+month+"-"+day
+// logger.debug(targetDay)
+// const testModel = mongoose.model('Cpuremove' , ModelCpu , 'test')
+
+// testModel.remove({ "date" :  {"$lt": new Date(targetDay)  } })
+// .then((findReuslt) => {
+//     logger.debug(findReuslt)
+// }).catch( (err) =>{
+//     logger.error(err)
+
+// })
+
 exports.mem = _mem2.default;
 exports.cpu = _stat2.default;
 exports.tcp = _tcp2.default;
@@ -132,5 +152,20 @@ var cpuResult = exports.cpuResult = function cpuResult(count) {
     return (0, _find.cpuFind)(CpuModel, count);
 };
 var tcpResult = exports.tcpResult = function tcpResult(count) {
-    return (0, _find.cpuFind)(TcpModel, count);
+    return (0, _find.tcpFind)(TcpModel, count);
+};
+var tcpCount = exports.tcpCount = function tcpCount() {
+    return (0, _find.tcpAllCount)(TcpModel);
+};
+var memMaxResult = exports.memMaxResult = function memMaxResult() {
+    return (0, _find.memMax)(MemModel);
+};
+var removeTcp = exports.removeTcp = function removeTcp() {
+    return (0, _remove.tcpRemove)(TcpModel);
+};
+var removeCpu = exports.removeCpu = function removeCpu() {
+    return (0, _remove.cpuRemove)(CpuModel);
+};
+var removeMem = exports.removeMem = function removeMem() {
+    return (0, _remove.memRemove)(MemModel);
 };
