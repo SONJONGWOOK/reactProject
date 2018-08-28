@@ -23,7 +23,7 @@ class Summary extends Component {
 
     this.interval = setInterval ( () => {
         this._setData()
-      }, 60000)
+    },  60000*30)
     }
     _setData = () =>{
       this._getData()
