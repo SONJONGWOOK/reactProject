@@ -40,7 +40,6 @@
 }
 .boardBody{
   width: 50%;
-    
 }
 .chart{
     width: 50em;
@@ -180,5 +179,14 @@ canvas{
         /* display: flex; */
         /* width: 100%; */
         flex-direction: column;
+    }
+    .boardBody{
+        width: 100%
+    }
+   
+    
+    .innerTcp{
+        display: flex;
+        flex-direction: row;
     }
 }
