@@ -36,7 +36,7 @@ class Summary extends Component {
 
     _callApiMem = () =>{
         // return  fetch('http://jsplays.iptime.org:3000/monitor/findMem/120')
-        return  fetch('http://localhost:3000/monitor/findMemMax')
+        return  fetch('http://jsplays.iptime.org:3000/monitor/findMemMax')
         .then(data => data.json())
         // .then(jsonData => console.log(jsonData))
         .then(jsonData => jsonData)
@@ -45,7 +45,7 @@ class Summary extends Component {
 
     _callApiTcp = () =>{
         
-        return  fetch('http://localhost:3000/monitor/findTcpCount')
+        return  fetch('http://jsplays.iptime.org:3000/monitor/findTcpCount')
         .then(data => data.json())
         // .then(jsonData => console.log(jsonData))
         .then(jsonData => jsonData)
