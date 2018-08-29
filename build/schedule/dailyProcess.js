@@ -14,9 +14,7 @@ var _nodeSchedule2 = _interopRequireDefault(_nodeSchedule);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('init schedule');
-var job = _nodeSchedule2.default.scheduleJob('* 48 * * * *', function () {
-    console.log("실행");
+var job = _nodeSchedule2.default.scheduleJob('0 0 3 * * *', function () {
     (0, _monitorFactory.removeCpu)();
     (0, _monitorFactory.removeTcp)();
     (0, _monitorFactory.removeMem)();

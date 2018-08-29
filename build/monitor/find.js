@@ -63,7 +63,8 @@ var memMax = function memMax(MemModel) {
     month = month > 9 ? String(month) : "0" + String(month);
     day = day > 9 ? String(day) : "0" + String(day);
     _loggerInit.appLogger.info(dt.getFullYear() + "  " + month + "  " + day);
-    var today = dt.getFullYear() + "-" + month + "-" + day;
+    var today = dt.getFullYear() + "-" + month + "-" + day + 3;
+    // let today = dt.getFullYear()+"-"+month+"-"+day
     return MemModel.find({ "date": { "$gte": new Date(today) } }).sort({ memAvailable: 1 }).limit(1);
 };
 
@@ -76,8 +77,9 @@ var tcpAllCount = function tcpAllCount(TcpModel) {
 
     return TcpModel.aggregate([{
         $match: {
-            "date": { "$gte": new Date(dt.getFullYear, month, day) }
-        }
+            "date": { "$gte": new Date(dt.getFullYear, month, day + 3)
+                // "date" : {"$gte": new Date(dt.getFullYear , month , day)  }
+            } }
     }, { $group: { '_id': 'null',
             "synSent": { '$sum': '$synSent' },
             "synRecv": { '$sum': '$synRecv' },

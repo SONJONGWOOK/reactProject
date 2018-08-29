@@ -20,26 +20,31 @@ day = day > 9 ? String(day) : "0" + String(day);
 var targetDay = dt.getFullYear() + "-" + month + "-" + day;
 
 var cpuRemove = function cpuRemove(CpuModel) {
-    _loggerInit.appLogger.info('cpu 이전 데이터 제거 작업');
     CpuModel.remove({ "date": { "$lt": new Date(targetDay) } }).then(function (findReuslt) {
+        _loggerInit.appLogger.info('cpu 이전 데이터 제거 작업 성공');
         _loggerInit.appLogger.info(findReuslt);
     }).catch(function (err) {
+        _loggerInit.appLogger.info('cpu 이전 데이터 제거 작업 실패');
         _loggerInit.appLogger.error(err);
     });
 };
 var tcpRemove = function tcpRemove(TcpModel) {
-    _loggerInit.appLogger.info('tcp 이전 데이터 제거 작업');
+
     TcpModel.remove({ "date": { "$lt": new Date(targetDay) } }).then(function (findReuslt) {
+        _loggerInit.appLogger.info('tcp 이전 데이터 제거 작업 성공');
         _loggerInit.appLogger.info(findReuslt);
     }).catch(function (err) {
+        _loggerInit.appLogger.info('tcp 이전 데이터 제거 작업 실패');
         _loggerInit.appLogger.error(err);
     });
 };
 var memRemove = function memRemove(MemModel) {
-    _loggerInit.appLogger.info('mem 이전 데이터 제거 작업');
+
     MemModel.remove({ "date": { "$lt": new Date(targetDay) } }).then(function (findReuslt) {
+        _loggerInit.appLogger.info('mem 이전 데이터 제거 작업 성공');
         _loggerInit.appLogger.info(findReuslt);
     }).catch(function (err) {
+        _loggerInit.appLogger.info('mem 이전 데이터 제거 작업 실패');
         _loggerInit.appLogger.error(err);
     });
 };

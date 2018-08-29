@@ -31,12 +31,11 @@ class Summary extends Component {
 
     componentWillUnmount() {
       clearInterval(this.interval)
-  
     }
-
     _callApiMem = () =>{
-        // return  fetch('http://jsplays.iptime.org:3000/monitor/findMem/120')
+        
         return  fetch('http://jsplays.iptime.org:3000/monitor/findMemMax')
+       
         .then(data => data.json())
         // .then(jsonData => console.log(jsonData))
         .then(jsonData => jsonData)
@@ -44,18 +43,17 @@ class Summary extends Component {
     }
 
     _callApiTcp = () =>{
-        
-        return  fetch('http://jsplays.iptime.org:3000/monitor/findTcpCount')
+      return  fetch('http://jsplays.iptime.org:3000/monitor/findTcpCount')
         .then(data => data.json())
         // .then(jsonData => console.log(jsonData))
         .then(jsonData => jsonData)
         .catch(err => console.log(err))   
-      }
+    }
 
     _getData = async () => {
-        let mem = await this._callApiMem();
-        let tcp = await this._callApiTcp();
-        let cpu = maxValue();
+        let mem = await this._callApiMem()
+        let tcp = await this._callApiTcp()
+        let cpu = maxValue()
         this.setState ({
           mem : mem ,
           tcp : tcp,
@@ -63,70 +61,72 @@ class Summary extends Component {
           data : true,
         })   
       }
+
+    _renderCpu = () =>{
+      return <div className="outerBoard"> 
+      <div className="innerCpu">
+        <span>{this.state.cpu.user.toFixed(0)}%</span>
+        <span>MAX USER</span>
+      </div>
+      <div className="innerCpu">
+        <span>{this.state.cpu.system.toFixed(0)}%</span>
+        <span>MAX SYSTEM</span>
+      </div>
+    </div>
+    }
+    _renderMem = () =>{
+      return <div className="outerBoard"> 
+      <div className="innerMem">
+        <span>{this.state.mem[0].memAvailable.toFixed(0)}</span>
+        <span>MAX MEMAVAILABLE</span>
+      </div>
+      <div className="innerMem">
+        <span>{this.state.mem[0].heapUsed.toFixed(0)}</span>
+        <span>MAX HEAPUSED</span>
+      </div>
+    </div>
+    }
+    _renderTcp = () =>{
+      return   <div className="outerBoard"> 
+      <div className="innerTcp">
+        <span>{this.state.tcp[0].synSent}</span>
+        <span>SYNSENT</span>
+      </div>
+      <div className="innerTcp">
+        <span>{this.state.tcp[0].close}</span>
+        <span>CLOSE</span>
+      </div>
+      <div className="innerTcp">
+        <span>{this.state.tcp[0].closeWait}</span>
+        <span>CLOSEWAIT</span>
+      </div>
+      <div className="innerTcp">
+        <span>{this.state.tcp[0].timeWait}</span>
+        <span>TIMEWAIT</span>
+      </div>
+      <div className="innerTcp">
+        <span>{parseInt(this.state.tcp[0].finWait1)+parseInt(this.state.tcp[0].finWait2)}</span>
+        <span>FINWAIT</span>
+      </div>
+      <div className="innerTcp">
+        <span>{this.state.tcp[0].listen}</span>
+        <span>LISTEN</span>
+      </div>
+      <div className="innerTcp">
+        <span>{this.state.tcp[0].synRecv}</span>
+        <span>SYNRECV</span>
+      </div>
+      <div className="innerTcp">
+        <span>{this.state.tcp[0].lastAck}</span>
+        <span>LASTACK</span>
+      </div>
+    </div>
+    }
     _renderChart = () => {
-
-      
-      
     return <div className="PBoard">
-      
-      <div className="outerBoard"> 
-        <div className="innerCpu">
-          <span>{this.state.cpu.user.toFixed(0)}%</span>
-          <span>MAX USER</span>
-        </div>
-        <div className="innerCpu">
-          <span>{this.state.cpu.system.toFixed(0)}%</span>
-          <span>MAX SYSTEM</span>
-        </div>
-      </div>
-     
-      <div className="outerBoard"> 
-        <div className="innerMem">
-          <span>{this.state.mem[0].memAvailable.toFixed(0)}</span>
-          <span>MAX MEMAVAILABLE</span>
-        </div>
-        <div className="innerMem">
-          <span>{this.state.mem[0].heapUsed.toFixed(0)}</span>
-          <span>MAX HEAPUSED</span>
-        </div>
-      </div>
-
-      <div className="outerBoard"> 
-        <div className="innerTcp">
-          <span>{this.state.tcp[0].synSent}</span>
-          <span>SYNSENT</span>
-        </div>
-        <div className="innerTcp">
-          <span>{this.state.tcp[0].close}</span>
-          <span>CLOSE</span>
-        </div>
-        <div className="innerTcp">
-          <span>{this.state.tcp[0].closeWait}</span>
-          <span>CLOSEWAIT</span>
-        </div>
-        <div className="innerTcp">
-          <span>{this.state.tcp[0].timeWait}</span>
-          <span>TIMEWAIT</span>
-        </div>
-        <div className="innerTcp">
-          <span>{parseInt(this.state.tcp[0].finWait1)}+{parseInt(this.state.tcp[0].finWait2)}</span>
-          <span>FINWAIT</span>
-        </div>
-        <div className="innerTcp">
-          <span>{this.state.tcp[0].listen}</span>
-          <span>LISTEN</span>
-        </div>
-        <div className="innerTcp">
-          <span>{this.state.tcp[0].synRecv}</span>
-          <span>SYNRECV</span>
-        </div>
-        <div className="innerTcp">
-          <span>{this.state.tcp[0].lastAck}</span>
-          <span>LASTACK</span>
-        </div>
-      </div>
-
-
+      {this._renderCpu()}
+      {!this.state.mem.message ? this._renderMem() : 'mem aggregate fail : '+ this.state.mem.kind + " "+ this.state.mem.name}
+      {!this.state.tcp.message ? this._renderTcp() : 'tcp aggregate fail : '+ this.state.tcp.kind + " "+ this.state.tcp.name}
     </div>
     }
     

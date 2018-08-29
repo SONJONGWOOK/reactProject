@@ -9,7 +9,6 @@ day = day > 9 ?  String(day) : "0"+String(day)
 let targetDay = dt.getFullYear()+"-"+month+"-"+day
 
 
-
 const cpuRemove = (CpuModel) =>{
     CpuModel.remove({ "date" :  {"$lt": new Date(targetDay)  } })
     .then((findReuslt) => {

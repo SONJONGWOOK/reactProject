@@ -130,8 +130,6 @@ class Cpu extends Component {
   }
 
   _getData = async () => {
-
-    console.log(getCpu())
             
     let data = await this._callApi('addData' , 2)
     this.setState ({
