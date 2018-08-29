@@ -49,8 +49,8 @@
   width: 50%;
 }
 .chart{
-    width: 40em;
-    height: 20em;
+    width: 50em;
+    height: 25em;
 }
 /* canvas{
     width: 50em;
@@ -163,7 +163,7 @@
 }
 
 
-@media screen and (min-width:280px) and (max-width:1300px){
+@media screen and (min-width:280px) and (max-width:800px){
     .chart{
         
         min-width : 100%;
