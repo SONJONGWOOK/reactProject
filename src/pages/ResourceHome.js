@@ -4,7 +4,7 @@ import '../css/resource.css'
 const Resource = () =>{
     return (
         <div>
-        <div id="resourceInfo">
+        <div className="resourceInfo">
                 <div className="resourceHome" id="infoLeft">
                     <h1>리눅스 모니터링</h1>
                     <p>proc 파일시스템과 node process API를 이용한 모니터링</p>

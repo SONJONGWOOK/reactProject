@@ -10,10 +10,17 @@
     color : white;    
 }
 
-.resourceHome{
+.resourceInfo{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* .resourceHome{
     display: inline-block;  
     vertical-align: text-top;
-}
+} */
 .resourceHome p{
     text-indent: 5%;
 }
@@ -45,10 +52,10 @@
     width: 50em;
     height: 25em;
 }
-canvas{
+/* canvas{
     width: 50em;
-    height: 25em;
-}
+    height: 25em;   
+} */
 
 .nameSpace {
     width: 100%;
@@ -106,42 +113,47 @@ canvas{
 }
 .outerBoard{
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
 
 }
 .innerCpu{
     display: flex;
-    width: 50%;
-    height: 33%;
+    min-width: 30%;
+    /* height: 33%; */
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 15px;
     border: 2px solid #E6E6E6;
-    margin :20px 10px 20px 10px;
+    margin :10px 0px 10px 0px;
     
 }
 .innerMem{
     display: flex;
-    width: 50%;
-    height: 33%;
+    min-width: 30%;
+    
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 15px;
     border: 2px solid #E6E6E6;
-    margin :20px 10px 20px 10px;
+    margin :10px 0px 10px 0px;
+    
 }
 
 .innerTcp{
     display: flex;
-    width: 12.5%;
-    height: 33%;
+    min-width: 24%;
+    
     flex-direction: column;
     align-items: center;
     justify-content: center;
     border-radius: 15px;
     border: 2px solid #E6E6E6;
-    margin :20px 10px 20px 10px;
+    margin :10px 0px 10px 0px;
+    
 }
 
 .display-none {
@@ -151,14 +163,18 @@ canvas{
 }
 
 
-@media screen and (min-width:320px) and (max-width:800px){
+@media screen and (min-width:280px) and (max-width:800px){
     .chart{
-        width:125%;
-        height: 125%;
-        /* max-width: 150%; */
-        /* max-height: 150%; */
         
+        min-width : 100%;
+        min-height: 100%;
+        width:100%;
+        height: 100%;
+        
+        /* max-width: 200%;
+        max-height: 200%; */
     }
+    
     .nameSpace {
         width:100%;
         display: flex;
@@ -183,10 +199,14 @@ canvas{
     .boardBody{
         width: 100%
     }
-   
-    
-    .innerTcp{
-        display: flex;
-        flex-direction: row;
+
+    .resourceInfo{
+        flex-direction: column;     
+    }
+    #infoLeft{
+        width: 100%;
+    }
+    #infoRight{
+        width:100%
     }
 }

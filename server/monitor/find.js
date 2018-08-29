@@ -62,12 +62,12 @@ const tcpAllCount = (TcpModel) =>{
     let day = dt.getDate()
     month = month > 9 ?  String(month) : "0"+String(month)
     day = day > 9 ?  String(day) : "0"+String(day)
-   
+    let today = dt.getFullYear()+"-"+month+"-"+day
     return TcpModel.aggregate( 
         [
            {
             $match : {
-                "date" : {"$gte": new Date(dt.getFullYear , month , day)  }
+                "date" : {"$gte": new Date(today)  }
                 } 
             }, 
             { $group: 

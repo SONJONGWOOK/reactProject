@@ -21,17 +21,22 @@ const _draw = (canvasId , data , axis) =>{
     //초기에 클리어
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    size = _radio(canvas)   
+    size = _radio(canvas) 
+
+
+
     yMax = axis.yMax
-    offsetX = _radio(canvas).x
-    offsetY = _radio(canvas).y
+    // offsetX = _radio(canvas).x
+    // offsetY = _radio(canvas).y
+    offsetX = 1200
+    offsetY = 600
     //x축 보통 시간순으로 표현  data길이가 시간이니 전체 /시간 = 시간당 칸수
     // console.log((offsetX-(offsetX*(1/6))))
     // console.log(data.length)
     xPoint = (offsetX-(offsetX*(1/6))) /data.length
     //y축 값의 퍼센트로 표현 y축 크기 /100 1퍼센트당 몇포인트인지 표현
     yPoint = (offsetY-(offsetY*(1/6))) /100
-
+    
     xSet = (offsetX*(1/6))/2
     ySet = (offsetY*(1/6))/2
 
@@ -46,6 +51,7 @@ const _draw = (canvasId , data , axis) =>{
     ctx.moveTo( (offsetX*(1/6))/2 , (offsetY*(1/6))/2  )
     ctx.lineTo( (offsetX*(1/6))/2 , offsetY-((offsetY*(1/6))/2) )
     ctx.lineTo( offsetX-((offsetX*(1/6))/2) , offsetY-((offsetY*(1/6))/2) )
+    
 
     // y축 
     for(let i = 0 ; i<11 ;i++){

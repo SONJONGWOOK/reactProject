@@ -5,7 +5,7 @@ const Home = () =>{
     return (
 
         <div>
-        <div id="resourceInfo">
+        <div className="resourceInfo">
                 <div className="resourceHome" id="infoLeft">
                     <h1>영화 순위 </h1>
                     <p>한국 영상 진흥원 API를 이용한 영화 일일/주간 순위 </p>
