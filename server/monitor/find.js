@@ -45,29 +45,34 @@ const cpuFind = (CpuModel, count) =>{
 const tcpFind = (TcpModel, count) =>{
     return TcpModel.find().sort({date : -1 }).limit(count)
 }
-const memMax = (MemModel) =>{
+
+const getTodayIsoType = () =>{
     let dt = new Date()
     let month = dt.getMonth()+1
     let day = dt.getDate()
     month = month > 9 ?  String(month) : "0"+String(month)
     day = day > 9 ?  String(day) : "0"+String(day)
-    logger.info(dt.getFullYear() +"  "+month +"  "+day)
     let today = dt.getFullYear()+"-"+month+"-"+day
-    return MemModel.find( { "date" :  {"$gte": new Date(today)  } } ).sort( {memAvailable : 1}).limit(1)
+
+    dt = new Date(today)
+    dt = dt.setHours(dt.getHours()-9)
+    return new Date(dt).toISOString()
+    
+}
+const memMax = (MemModel) =>{
+    let isoToday = getTodayIsoType();
+    return MemModel.find( { "date" :  {"$gte": isoToday  } } ).sort( {memAvailable : 1}).limit(1)
 }
 
 const tcpAllCount = (TcpModel) =>{
-    let dt = new Date()
-    let month = dt.getMonth()+1
-    let day = dt.getDate()
-    month = month > 9 ?  String(month) : "0"+String(month)
-    day = day > 9 ?  String(day) : "0"+String(day)
-    let today = dt.getFullYear()+"-"+month+"-"+day
+    
+    let isoToday = getTodayIsoType();
+
     return TcpModel.aggregate( 
         [
            {
             $match : {
-                "date" : {"$gte": new Date(today)  }
+                "date" : {"$gte": new Date(isoToday)  }
                 } 
             }, 
             { $group: 

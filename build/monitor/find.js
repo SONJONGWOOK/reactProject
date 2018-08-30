@@ -56,27 +56,31 @@ var cpuFind = function cpuFind(CpuModel, count) {
 var tcpFind = function tcpFind(TcpModel, count) {
     return TcpModel.find().sort({ date: -1 }).limit(count);
 };
-var memMax = function memMax(MemModel) {
+
+var getTodayIsoType = function getTodayIsoType() {
     var dt = new Date();
     var month = dt.getMonth() + 1;
     var day = dt.getDate();
     month = month > 9 ? String(month) : "0" + String(month);
     day = day > 9 ? String(day) : "0" + String(day);
-    _loggerInit.appLogger.info(dt.getFullYear() + "  " + month + "  " + day);
     var today = dt.getFullYear() + "-" + month + "-" + day;
-    return MemModel.find({ "date": { "$gte": new Date(today) } }).sort({ memAvailable: 1 }).limit(1);
+
+    dt = new Date(today);
+    dt = dt.setHours(dt.getHours() - 9);
+    return new Date(dt).toISOString();
+};
+var memMax = function memMax(MemModel) {
+    var isoToday = getTodayIsoType();
+    return MemModel.find({ "date": { "$gte": isoToday } }).sort({ memAvailable: 1 }).limit(1);
 };
 
 var tcpAllCount = function tcpAllCount(TcpModel) {
-    var dt = new Date();
-    var month = dt.getMonth() + 1;
-    var day = dt.getDate();
-    month = month > 9 ? String(month) : "0" + String(month);
-    day = day > 9 ? String(day) : "0" + String(day);
-    var today = dt.getFullYear() + "-" + month + "-" + day;
+
+    var isoToday = getTodayIsoType();
+
     return TcpModel.aggregate([{
         $match: {
-            "date": { "$gte": new Date(today) }
+            "date": { "$gte": new Date(isoToday) }
         }
     }, { $group: { '_id': 'null',
             "synSent": { '$sum': '$synSent' },
