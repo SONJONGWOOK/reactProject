@@ -68,6 +68,7 @@
     /* width: 50em; */
     display: flex;
     flex-direction: row;
+    flex-shrink: 1; 
 }
 
 .nameSpaceCheck{
@@ -163,7 +164,7 @@
 }
 
 
-@media screen and (min-width:280px) and (max-width:800px){
+@media screen and (min-width:140px) and (max-width:800px){
     .chart{
         
         min-width : 100%;
@@ -183,13 +184,15 @@
     }
     
     .outerCounter{
-        width:20%; 
-        display: flex;
+        /* width:20%;  */
+        /* display: flex; */
         flex-direction: column; 
+        
     }
     .counter {
         font-size: 3em;
         width: 30%;
+        min-width:30%;
     }
     .board{
         /* display: flex; */

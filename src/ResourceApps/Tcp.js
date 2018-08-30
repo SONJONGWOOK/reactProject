@@ -129,12 +129,12 @@ class Tcp extends Component {
         
    this.counterDom =  <div className ="outerCounter">
     <div className="counter" id="count1">
-      <span>{this.count1}</span>
-      <span className="innerCounter">ConnectionProcess</span>
+      <div>{this.count1}</div>
+      <div className="innerCounter">ConnectionProcess</div>
     </div>
     <div className="counter" id="count2">
-      <span>{this.count2}</span>
-      <span className="innerCounter">ClosingProcess</span>
+      <div>{this.count2}</div>
+      <div className="innerCounter">ClosingProcess</div>
     </div>
   </div> 
   }
