@@ -71,7 +71,7 @@ var getTodayIsoType = function getTodayIsoType() {
 };
 var memMax = function memMax(MemModel) {
     var isoToday = getTodayIsoType();
-    return MemModel.find({ "date": { "$gte": isoToday } }).sort({ memAvailable: 1 }).limit(1);
+    return MemModel.find({ "date": { "$gte": new Date(isoToday) } }).sort({ memAvailable: 1 }).limit(1);
 };
 
 var tcpAllCount = function tcpAllCount(TcpModel) {

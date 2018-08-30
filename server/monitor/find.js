@@ -61,7 +61,7 @@ const getTodayIsoType = () =>{
 }
 const memMax = (MemModel) =>{
     let isoToday = getTodayIsoType();
-    return MemModel.find( { "date" :  {"$gte": isoToday  } } ).sort( {memAvailable : 1}).limit(1)
+    return MemModel.find( { "date" :  {"$gte": new Date(isoToday)  } } ).sort( {memAvailable : 1}).limit(1)
 }
 
 const tcpAllCount = (TcpModel) =>{
