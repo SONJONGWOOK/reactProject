@@ -48,6 +48,11 @@ app.get('/resource*', function(req, res) {
     res.sendFile(path.resolve(__dirname + '/../public/resource/index.html'));
 });
 
+app.get('/schedule*', function(req, res) {
+     
+    res.sendFile(path.resolve(__dirname + '/../public/schedule/index.html'));
+});
+
 
 //이미지 처리용 url
 app.use ('/asset/*' , (req ,res) => {

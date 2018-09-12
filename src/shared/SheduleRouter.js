@@ -1,13 +1,13 @@
 import React, {Component} from 'react'
 import { BrowserRouter as Router, Route, Link ,NavLink , Switch } from "react-router-dom"
-import {ResourceHome , Cpu , Mem , Tcp , Board} from '../pages'
+import {ResourceHome , Cpu , Mem , Tcp , Board} from '../pages/index'
 import { Navbar, Nav ,NavItem } from 'react-bootstrap'
 import '../css/resourceRouter.css'
 
 class Welcome extends Component {
 
     _navInstace = () =>{
-       return   <Navbar>
+       return   <Navbar >
         <Navbar.Header className = "mainNav">
             <Navbar.Brand >
                 <NavItem href="/" to="/">HOME</NavItem>
@@ -22,7 +22,6 @@ class Welcome extends Component {
            </Nav>
          </Navbar> 
     }
-    
     render() {
         
         return(

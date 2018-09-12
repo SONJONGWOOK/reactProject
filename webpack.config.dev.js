@@ -5,7 +5,9 @@ module.exports = {
     mode: 'development' ,
     entry:{
         // movie : './src/movie.js' ,
-        app : './src/resource.js',
+        // resource : './src/resource.js',
+        // app : './src/resource.js',
+        app : './src/schedule.js',
         dev : 'webpack-dev-server/client?http://0.0.0.0:3001' , 
         devOnly : 'webpack/hot/only-dev-server',
         babelPolyfill :  'babel-polyfill'
