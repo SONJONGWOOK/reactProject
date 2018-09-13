@@ -12,14 +12,29 @@
     border: 1px solid black;
     /* text-align: right; */
     min-width: 14.2%;
+    max-width: 14.2%;
     min-height: 5rem;
     display:flex;
     flex-direction: column;
 }
+.scheduleBox{
+     display: flex; 
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+
+}
+.scheduleIcon{
+    min-width: 0;
+    flex-basis: 20%;
+}
 .header{
     display: flex;
     flex-direction: column;
-    text-align: center
+    text-align: center;
+   
+
+
 }
 .otherMonth{
     color : gray;
@@ -28,6 +43,7 @@
     align-self: flex-end;
     margin-right: 3rem;
 }
+
 
 #today{
    border: 3px solid red;

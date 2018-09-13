@@ -31,9 +31,21 @@ class Day extends Component{
         })
     }
     
-    _DayInfo = ({day , month, dayOfWeek , isMonth , year , isToday , dayOnclick}) =>{
+    _DayInfo = ({day , month, dayOfWeek , isMonth , year , isToday , dayOnclick , schedule}) =>{
         
-
+        let addSchedule = schedule.map( (value , index) => {
+            let type = value.type
+            let display
+            switch(type){
+                case 'SELECT' :  display = <span>&#10004;</span>
+                break
+                case '1' :  display = <span>&#10000;</span>
+                break
+                case '2' :  display =  <span>&#9996;</span>
+                break
+            }
+            return <span className="scheduleIcon"  key={day+""+index}>{display}</span>
+        })
         let className = isMonth ? "day"  : "day otherMonth"
         let addMonth = isMonth ? ""  : <span>{month}월</span>
         let el =<span>{addMonth}{day}일</span>
@@ -44,9 +56,12 @@ class Day extends Component{
                     onMouseOut={(event) => { this._outEvent(event) }}
                     onClick={(event) => { dayOnclick(event , this)  } }
                     style={this._customStyle() }
-                >  
-                {el}
-                    {/* <span>{dayOfWeek}</span> */}
+                >   {el}
+                    <div className="scheduleBox">
+                        {addSchedule}
+                    </div>
+                    
+            
                 </div>
     }
  
@@ -59,6 +74,7 @@ class Day extends Component{
             isMonth={this.props.isMonth}
             isToday={this.props.isToday}
             dayOnclick={this.props.dayOnclick}
+            schedule={this.props.schedule}
         ></this._DayInfo>
     }
         
