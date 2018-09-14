@@ -43,6 +43,7 @@ class Day extends Component{
                 break
                 case '2' :  display =  <span>&#9996;</span>
                 break
+                default : display =  <span>&#9995;</span>
             }
             return <span className="scheduleIcon"  key={day+""+index}>{display}</span>
         })

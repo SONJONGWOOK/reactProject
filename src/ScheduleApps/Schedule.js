@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Day from './Day'
 import '../css/schedule.css';
-import { Button, ButtonGroup, InputGroup , InputGroupButtonDropdown ,DropdownToggle,DropdownMenu,DropdownItem,Input,InputGroupAddon   } from 'reactstrap';
+import { Table, Button, ButtonGroup, InputGroup , InputGroupButtonDropdown ,DropdownToggle,DropdownMenu,DropdownItem,Input,InputGroupAddon   } from 'reactstrap';
 import loading from '../../asset/loading.gif'
 
 
@@ -26,6 +26,7 @@ constructor(props) {
   this.dropDownText = 'SELECT'
   this.inputText
   this.detail
+  this.clickDay 
   this.today  = new Date()
   this.days = ['일' ,'월' ,'화' ,'수' ,'목' ,'금' ,'토' ]
   this.toggleDropDown = this._toggleDropDown.bind(this);
@@ -109,17 +110,15 @@ constructor(props) {
   }
 
   _dayOnclick = (event , thisObject) => {
-    console.log(thisObject)
+    
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
-
-    this.detail = thisObject.props.schedule.map( (value , index) =>{
-      return <div key={index} >{value.text}</div>
-    })
-    console.log(this.detail)
+    this.detail = thisObject.props.schedule
     this.setState({
       inputOpen : true ,
       inputDay : date ,
     })
+
+    this.clickDay = date 
     
   }
   _inputSave =  (event , thisObject) => {
@@ -246,6 +245,10 @@ constructor(props) {
     let dt = this.state.now
     return dt.getFullYear()+'년 '+ parseInt(dt.getMonth()+1) +'월'
   }
+  _bottomHeder = () =>{
+      console.log(this.clickDay)
+    return <h1 style={this._customStyle()}  >{this.clickDay.toLocaleDateString() + " detail schedule"}</h1>
+  }
 
   _inputgroup = () =>{    
      //드롭다운 버튼 
@@ -271,7 +274,54 @@ constructor(props) {
     </div> 
   }
   _detailgroup = () =>{   
-    return <div style={this._customStyle()} > {this.detail} </div>
+    // console.log(this.detail)
+    let addBody = this.detail.map( (value , index) =>{
+        return    <tr key={index}>
+                    <th scope="row">{index+1}</th>
+                    <td>{value.date.toLocaleDateString()}</td>
+                    <td>{value.type}</td>
+                    <td>{value.text}</td>
+                  </tr>
+      // return <div key={index} >{value.text}</div>
+    })
+
+    return <Table  style={this._customStyle()} hover>
+    <thead>
+      <tr >
+        <th></th>
+        <th className="detail">일자</th>
+        <th className="detail">종류</th>
+        <th className="detail" >내용</th>
+     
+      </tr>
+    </thead>
+    <tbody>
+      {addBody}
+      {/* <tr>
+        <th scope="row">1</th>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+    
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+   
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>Table cell</td>
+        <td>Table cell</td>
+        <td>Table cell</td>
+   
+      </tr> */}
+    </tbody>
+  </Table>
+
+    // return <div style={this._customStyle()} > {this.detail} </div>
   }
   
   render() {  
@@ -289,9 +339,12 @@ constructor(props) {
         </div>
         <div className="main">
           {this.state.now ? this._getCalendar() : '로딩'}     
-        </div>   
-          {this._inputgroup()}
-          {this._detailgroup()}
+        </div> 
+        <div className="bottom">
+          {this.state.inputOpen ? this._bottomHeder() : ''}
+          {this.state.inputOpen ? this._inputgroup() : ''}
+          {this.state.inputOpen ? this._detailgroup() : '' }
+          </div>
         </div>
     )
   } 

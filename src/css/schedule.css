@@ -8,6 +8,14 @@
     flex-wrap : wrap;
     margin: 0rem 3rem 0rem 3rem;
 }
+.bottom{
+    
+    margin: 3rem 3rem 0rem 3rem;
+}
+.detail{
+    width: 40%;
+    min-width: 40%;
+}
 .day{
     border: 1px solid black;
     /* text-align: right; */
