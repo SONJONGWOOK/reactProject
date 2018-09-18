@@ -9,8 +9,10 @@ import {cpuRemove , tcpRemove , memRemove} from './remove'
 
 mongoose.Promise = global.Promise
 mongoose.connect('mongodb://jsplays.iptime.org:27017/resource')
-.then( ()=> console.log('Successfully connected to mongodb'))
-.catch(e => console.error(e))
+.then( ()=> {
+    console.log('Successfully connected to mongodb')
+}).catch(e => console.error(e))
+
 
 
 const MemModel = mongoose.model('MemInput' , ModelMem , 'mem')
@@ -21,7 +23,7 @@ const TcpModel = mongoose.model('TcpInput' , ModelTcp , 'tcp')
 
 setInterval( ()=> { 
     let memData = mem()
-    if(memData !== undefined ) {
+    if(memData !== undefined  && mongoose.connection.readyState === 1) {
             // logger.info(memData)
         const saveMem = new MemModel({
             memTotal : memData.osMem.MemTotal , 
@@ -41,7 +43,7 @@ setInterval( ()=> {
 
 setInterval( ()=> { 
     let memData = mem()
-    if(memData !== undefined ) {
+    if(memData !== undefined   && mongoose.connection.readyState === 1 ) {
             // logger.info(memData)
         const saveMem = new MemModel({
             memTotal : memData.osMem.MemTotal , 
@@ -61,7 +63,7 @@ setInterval( ()=> {
 
 setInterval( ()=> { 
     let cpuData = cpu()
-    if(cpuData !== undefined ) {
+    if(cpuData !== undefined  && mongoose.connection.readyState === 1 ) {
         // logger.info(cpuData)
         const saveCpu = new CpuModel({
             user : cpuData.osCpu.user,
@@ -78,7 +80,7 @@ setInterval( ()=> {
 
     let tcpData = tcp()
     
-    if(tcpData !== undefined ) {
+    if(tcpData !== undefined   && mongoose.connection.readyState === 1 ) {
          
         // logger.info(tcpData)
         const saveTcp = new TcpModel({
@@ -118,7 +120,7 @@ setInterval( ()=> {
 //     logger.error(err)
     
 // })
-
+export {mongoose}
 export {mem}
 export {cpu}
 export {tcp}

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.removeMem = exports.removeCpu = exports.removeTcp = exports.memMaxResult = exports.tcpCount = exports.tcpResult = exports.cpuResult = exports.memResult = exports.tcp = exports.cpu = exports.mem = undefined;
+exports.removeMem = exports.removeCpu = exports.removeTcp = exports.memMaxResult = exports.tcpCount = exports.tcpResult = exports.cpuResult = exports.memResult = exports.tcp = exports.cpu = exports.mem = exports.mongoose = undefined;
 
 var _loggerInit = require('../logger/loggerInit');
 
@@ -35,7 +35,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _mongoose2.default.Promise = global.Promise;
 _mongoose2.default.connect('mongodb://jsplays.iptime.org:27017/resource').then(function () {
-    return console.log('Successfully connected to mongodb');
+    console.log('Successfully connected to mongodb');
 }).catch(function (e) {
     return console.error(e);
 });
@@ -46,7 +46,7 @@ var TcpModel = _mongoose2.default.model('TcpInput', _test.ModelTcp, 'tcp');
 
 setInterval(function () {
     var memData = (0, _mem2.default)();
-    if (memData !== undefined) {
+    if (memData !== undefined && _mongoose2.default.connection.readyState === 1) {
         // logger.info(memData)
         var saveMem = new MemModel({
             memTotal: memData.osMem.MemTotal,
@@ -65,7 +65,7 @@ setInterval(function () {
 
 setInterval(function () {
     var memData = (0, _mem2.default)();
-    if (memData !== undefined) {
+    if (memData !== undefined && _mongoose2.default.connection.readyState === 1) {
         // logger.info(memData)
         var saveMem = new MemModel({
             memTotal: memData.osMem.MemTotal,
@@ -84,7 +84,7 @@ setInterval(function () {
 
 setInterval(function () {
     var cpuData = (0, _stat2.default)();
-    if (cpuData !== undefined) {
+    if (cpuData !== undefined && _mongoose2.default.connection.readyState === 1) {
         // logger.info(cpuData)
         var saveCpu = new CpuModel({
             user: cpuData.osCpu.user,
@@ -101,7 +101,7 @@ setInterval(function () {
 
     var tcpData = (0, _tcp2.default)();
 
-    if (tcpData !== undefined) {
+    if (tcpData !== undefined && _mongoose2.default.connection.readyState === 1) {
 
         // logger.info(tcpData)
         var saveTcp = new TcpModel({
@@ -141,7 +141,7 @@ setInterval(function () {
 //     logger.error(err)
 
 // })
-
+exports.mongoose = _mongoose2.default;
 exports.mem = _mem2.default;
 exports.cpu = _stat2.default;
 exports.tcp = _tcp2.default;

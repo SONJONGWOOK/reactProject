@@ -4,6 +4,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _express = require('express');
 
 var _express2 = _interopRequireDefault(_express);
@@ -20,6 +22,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var path = require('path');
 var router = _express2.default.Router();
+
+router.get('/conn', function (req, res) {
+    var asdf = _monitorFactory.mongoose.connection.readyState;
+    console.log(asdf);
+    console.log(typeof asdf === 'undefined' ? 'undefined' : _typeof(asdf));
+});
 
 router.get('/', function (req, res) {
     var output = {

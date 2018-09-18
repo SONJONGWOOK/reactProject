@@ -3,6 +3,7 @@ import Day from './Day'
 import '../css/schedule.css';
 import { Table, Button, ButtonGroup, InputGroup , InputGroupButtonDropdown ,DropdownToggle,DropdownMenu,DropdownItem,Input,InputGroupAddon   } from 'reactstrap';
 import loading from '../../asset/loading.gif'
+import {send} from './DataProcess'
 
 
 //윈도우 달력과 동일하게 제작
@@ -47,6 +48,7 @@ constructor(props) {
   }
   
   componentDidMount(){
+    send('http://localhost:3001/calendar/post' , {'type' : 'aaa' , 'text' : 'bbb'})
   //총 42칸 제작 = 7*6
     //달 시작
     // console.log(new Date( this.year , this.today.getMonth() , 1).toLocaleDateString())

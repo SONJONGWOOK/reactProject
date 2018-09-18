@@ -1,8 +1,15 @@
 import express from 'express'
 import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
-import monitorFactory , {mem , cpu , tcp , memResult , cpuResult , tcpResult, tcpCount, memMaxResult} from '../monitor/monitorFactory'
+import monitorFactory , {mongoose ,mem , cpu , tcp , memResult , cpuResult , tcpResult, tcpCount, memMaxResult} from '../monitor/monitorFactory'
 const path = require('path')
 const router = express.Router()
+
+
+router.get('/conn' , (req , res) =>{
+    let asdf = mongoose.connection.readyState
+    console.log(asdf)
+    console.log(typeof asdf)   
+})
 
 
 router.get('/' , (req , res) =>{

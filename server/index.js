@@ -3,6 +3,8 @@ import WebpackDevServer from 'webpack-dev-server'
 import webpack from 'webpack'
 import "babel-polyfill"
 import "isomorphic-fetch"
+import bodyParser from 'body-parser'
+import cors  from 'cors'
 
 const app = express()
 const port = 3000;
@@ -17,6 +19,7 @@ app.use(log4js.connectLogger(log4js.getLogger('http')  ) )
 const server = app.listen(port , () => {
     logger.debug("server start "+port)
 })
+
 //dev서버 기동 hot load 설정해놓은거있음.
 if(process.env.NODE_ENV == 'development'){
     logger.debug('devServer')
@@ -30,8 +33,20 @@ if(process.env.NODE_ENV == 'development'){
     })
 }
 
+//body-parser
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json())
+
+
+
+
+
 app.use ('/' , express.static(__dirname+ '/../public'))
 
+//cors허용
+// cors모듈 사용
+// app.use(cors())
+//express에 헤더 추가
 app.all('/*', (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*")
     res.header("Access-Control-Allow-Headers", "X-Requested-With")
@@ -68,6 +83,9 @@ app.use("/posts", posts)
 //모니터링 라우트
 import monitors from './routes/monitors'
 app.use("/monitor", monitors)
+
+import schedule from './routes/schedule'
+app.use("/calendar", schedule)
 
 //스케쥴러
 import dailyProcess from './schedule/dailyProcess'

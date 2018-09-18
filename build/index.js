@@ -16,6 +16,14 @@ require('babel-polyfill');
 
 require('isomorphic-fetch');
 
+var _bodyParser = require('body-parser');
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+var _cors = require('cors');
+
+var _cors2 = _interopRequireDefault(_cors);
+
 var _loggerInit = require('./logger/loggerInit');
 
 var _loggerInit2 = _interopRequireDefault(_loggerInit);
@@ -27,6 +35,10 @@ var _posts2 = _interopRequireDefault(_posts);
 var _monitors = require('./routes/monitors');
 
 var _monitors2 = _interopRequireDefault(_monitors);
+
+var _schedule = require('./routes/schedule');
+
+var _schedule2 = _interopRequireDefault(_schedule);
 
 var _dailyProcess = require('./schedule/dailyProcess');
 
@@ -47,6 +59,7 @@ app.use(_loggerInit2.default.connectLogger(_loggerInit2.default.getLogger('http'
 var server = app.listen(port, function () {
     _loggerInit.appLogger.debug("server start " + port);
 });
+
 //dev서버 기동 hot load 설정해놓은거있음.
 if (process.env.NODE_ENV == 'development') {
     _loggerInit.appLogger.debug('devServer');
@@ -60,8 +73,16 @@ if (process.env.NODE_ENV == 'development') {
     });
 }
 
+//body-parser
+app.use(_bodyParser2.default.urlencoded({ extended: true }));
+app.use(_bodyParser2.default.json());
+
 app.use('/', _express2.default.static(__dirname + '/../public'));
 
+//cors허용
+// cors모듈 사용
+// app.use(cors())
+//express에 헤더 추가
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -97,5 +118,7 @@ app.use("/posts", _posts2.default);
 //모니터링 라우트
 
 app.use("/monitor", _monitors2.default);
+
+app.use("/calendar", _schedule2.default);
 
 //스케쥴러
