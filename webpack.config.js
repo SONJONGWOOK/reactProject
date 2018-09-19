@@ -6,6 +6,7 @@ module.exports = {
         index : './src/index.js',
         movie : './src/movie.js',
         resource : './src/resource.js',
+        schedule : './src/schedule.js' ,
         babelPolyfill : 'babel-polyfill'
     
         

@@ -20,10 +20,21 @@ var path = require('path');
 var router = _express2.default.Router();
 
 router.post('/post', function (req, res) {
-    console.log("시작");
-    _loggerInit.appLogger.info(req.body);
     (0, _factory.schedulePost)(req.body);
-    console.log("끝");
+    _loggerInit.appLogger.info("저장완료");
+    _loggerInit.appLogger.info(req.body);
+});
+
+router.get('/get', function (req, res) {
+
+    (0, _factory.scheduleGet)().then(function (result) {
+        return result;
+    }).then(function (findReuslt) {
+        res.send(findReuslt);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
 });
 
 exports.default = router;

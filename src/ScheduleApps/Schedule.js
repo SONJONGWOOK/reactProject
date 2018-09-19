@@ -48,7 +48,7 @@ constructor(props) {
   }
   
   componentDidMount(){
-    send('http://localhost:3001/calendar/post' , {'type' : 'aaa' , 'text' : 'bbb'})
+    this._initDataList()
   //총 42칸 제작 = 7*6
     //달 시작
     // console.log(new Date( this.year , this.today.getMonth() , 1).toLocaleDateString())
@@ -78,6 +78,28 @@ constructor(props) {
   componentWillUnmount() {
     
   }
+
+  _initDataList = async () =>{
+    let list = await this._callApi();
+    list = list.map( ( data) =>{
+      let convertDate = new Date(data.date)
+      data.date = convertDate
+      return data
+    })
+    // console.log(list)
+    this.setState({
+      list
+    })
+
+    
+  }
+  _callApi = () =>{
+    
+    return  fetch('http://localhost:3000/calendar/get')
+    .then(data => data.json())
+    .catch(err => console.log(err))
+    }
+  
 
   _changeDropValue = (e) =>{
     
@@ -131,13 +153,15 @@ constructor(props) {
     let inputData = {
           date : inputDay ,
           type : this.state.dropDownValue ,
-          text :  document.querySelector("#inputText").value
-      
+          text :  document.querySelector("#inputText").value  
     }   
+    console.log(inputData)
+    send('http://localhost:3001/calendar/post' , {'type' : this.state.dropDownValue  , 'text' : document.querySelector("#inputText").value , 'date' : inputDay })
+    
     list.push(inputData)
     //초기화
     this.setState({
-      inputOpen : false,
+      // inputOpen : false,
       dropDownValue : this.dropDownText,
       list
     })
@@ -264,10 +288,10 @@ constructor(props) {
         <DropdownMenu>
           <DropdownItem header>종류</DropdownItem>
           {/* <DropdownItem disabled>0</DropdownItem> */}
-          <DropdownItem  onClick={(event) => this._changeDropValue(event)} >1</DropdownItem>
-          <DropdownItem  onClick={(event) => this._changeDropValue(event)} >2</DropdownItem>
+          <DropdownItem  onClick={(event) => this._changeDropValue(event)} >TYPE1</DropdownItem>
+          <DropdownItem  onClick={(event) => this._changeDropValue(event)} >YTPE2</DropdownItem>
           <DropdownItem divider />
-          <DropdownItem  onClick={(event) => this._changeDropValue(event)} >3</DropdownItem>
+          <DropdownItem  onClick={(event) => this._changeDropValue(event)} >TYPE3</DropdownItem>
         </DropdownMenu>
       </InputGroupButtonDropdown>
       <Input id="inputText" type="text" placeholder="내용"/>
@@ -293,7 +317,7 @@ constructor(props) {
         <th></th>
         <th className="detail">일자</th>
         <th className="detail">종류</th>
-        <th className="detail" >내용</th>
+        <th className="detail">내용</th>
      
       </tr>
     </thead>

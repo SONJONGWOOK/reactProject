@@ -18,7 +18,8 @@ var post = function post(scheduleModel, data) {
     _loggerInit.appLogger.info(data.text);
     var save = new scheduleModel({
         type: data.type,
-        text: data.text
+        text: data.text,
+        date: data.setDate
     });
 
     save.save().then(function () {

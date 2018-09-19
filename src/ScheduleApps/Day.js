@@ -39,9 +39,9 @@ class Day extends Component{
             switch(type){
                 case 'SELECT' :  display = <span>&#10004;</span>
                 break
-                case '1' :  display = <span>&#10000;</span>
+                case 'TYPE1' :  display = <span>&#10000;</span>
                 break
-                case '2' :  display =  <span>&#9996;</span>
+                case 'TYPE2' :  display =  <span>&#9996;</span>
                 break
                 default : display =  <span>&#9995;</span>
             }
