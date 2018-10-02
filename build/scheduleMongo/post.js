@@ -19,7 +19,7 @@ var post = function post(scheduleModel, data) {
     var save = new scheduleModel({
         type: data.type,
         text: data.text,
-        date: data.setDate
+        date: data.date
     });
 
     save.save().then(function () {

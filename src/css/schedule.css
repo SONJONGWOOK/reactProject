@@ -24,6 +24,12 @@
     min-height: 5rem;
     display:flex;
     flex-direction: column;
+    
+    -webkit-touch-callout: none;
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
 }
 .scheduleBox{
      display: flex; 

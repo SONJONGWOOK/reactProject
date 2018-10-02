@@ -8,7 +8,7 @@ const post = (scheduleModel , data) =>{
     const save = new scheduleModel({
         type : data.type,
         text : data.text,
-        date : data.setDate
+        date : data.date
     })
     
    save.save().then( () => logger.info("shedule save complete")).catch(e => logger.error(e))
