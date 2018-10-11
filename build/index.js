@@ -81,7 +81,7 @@ app.use('/', _express2.default.static(__dirname + '/../public'));
 
 //cors허용
 // cors모듈 사용
-// app.use(cors())
+//  app.use(cors())
 //express에 헤더 추가
 app.all('/*', function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

@@ -62,3 +62,15 @@
 #today{
    border: 3px solid red;
 }
+
+#prevMonth{
+    position: relative;   
+    border: 1px solid black;
+    right : 3rem;
+    width: 3rem;
+}
+#nextMonth{
+    position: relative;   
+    border: 1px solid black;
+    width: 3rem;
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Day from './Day'
 import '../css/schedule.css';
-import { InputGroup  , DropdownButton , Dropdown , FormControl ,  Table , Button , ButtonGroup  } from 'react-bootstrap';
+import { InputGroup  , DropdownButton , Dropdown , FormControl ,  Table , Button , ButtonGroup , Overlay , Tooltip  } from 'react-bootstrap';
 import loading from '../../asset/loading.gif'
 import {send} from './DataProcess'
 
@@ -32,6 +32,10 @@ constructor(props) {
   this.dropDownText = 'SELECT'
   this.today  = new Date()
   this.days = ['일' ,'월' ,'화' ,'수' ,'목' ,'금' ,'토' ]
+
+  this.attachRef = target =>  {
+    this.setState({ target })
+  }
   
     this.state = {
       now : this.today,
@@ -42,6 +46,8 @@ constructor(props) {
       dropDownValue : this.dropDownText,
       mouseDown : false,
       list : [],
+      show: false,
+      target : undefined
     }
 
     //데이터 형태
@@ -71,7 +77,18 @@ constructor(props) {
     // dropItem.addEventListener('click' , (e) => {
     //   console.log(e.target)
     // })
-      
+    
+
+    document.querySelector('.outer').addEventListener('mouseleave' , () => {
+      if(this.state.mouseDown)
+        this.setState({
+          mouseDown : false,
+          ganttEnd  : undefined,
+          ganttOpen : undefined, 
+          inputOpen : false,
+        })
+  
+    })
 
 
 
@@ -156,9 +173,12 @@ constructor(props) {
        
   }
   _dayOnMouseUp = (event , thisObject) => {
-    // this.mouseDown = true
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
-    console.log()
+    
+    // this.mouseDown = true
+    thisObject.prevMonth = {display : "none"}
+    thisObject.nextMonth = {display : "none"}
+
     this.setState({
       mouseDown : false,
       ganttEnd  : date,
@@ -169,13 +189,29 @@ constructor(props) {
     
   }
 
-  _dayOnMouseOver = (event , thisObject) =>{
+  _dayOnMouseOver = (event , thisObject) =>{ 
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
-
+    
+    
     this.setState({
       ganttEnd  : date,
     })
   }
+
+  _moveMonth = (event , thisObject) =>{
+    // console.log(event.target.parentNode)
+    // console.log(event.target.parentNode.style)
+    // console.log(event.target.parentNode.style.width)
+    // console.log(event.target.parentNode.style.offsetWidth )
+    thisObject.prevMonth = {display : "none"}
+    thisObject.nextMonth = {display : "none"}
+    if(thisObject.props.index == 0 ){
+      this._prevMonth()
+    }else if(thisObject.props.index == 41 ){
+      this._nextMonth()
+    }
+  }
+
 
   _inputSave =  (event , thisObject) => {
     
@@ -212,7 +248,7 @@ constructor(props) {
   }
 
   _ganttSave = (event , thisObject) => {
-    alert("간트세이부")
+    
     this.ganttSchedule  = ""
 
     this.setState({
@@ -318,6 +354,7 @@ constructor(props) {
       // console.log(value)
       return  <Day 
                 key={index}
+                index={index}
                 day={value.date.getDate()}
                 month={value.date.getMonth()+1}
                 year={value.date.getFullYear()}
@@ -330,6 +367,7 @@ constructor(props) {
                 dayOnMouseDown={this._dayOnMouseDown}
                 dayOnMouseUp={this._dayOnMouseUp}
                 dayOnMouseOver={this._dayOnMouseOver}
+                moveMonth={this._moveMonth}
                 schedule={value.schedule}
               ></Day>
     })
@@ -340,7 +378,7 @@ constructor(props) {
     return dt.getFullYear()+'년 '+ parseInt(dt.getMonth()+1) +'월'
   }
   _bottomHeder = () =>{
-      console.log(this.clickDay)
+      // console.log(this.clickDay)
     return <h1 style={this._customStyle()}  >{this.clickDay.toLocaleDateString() + " detail schedule"}</h1>
   }
 
@@ -368,7 +406,7 @@ constructor(props) {
     </div> 
   }
   _detailgroup = () =>{   
-    console.log(this.detail)
+    // console.log(this.detail)
     let addBody = this.detail.map( (value , index) =>{
         return    <tr key={index}>
                     <th scope="row">{index+1}</th>
@@ -396,10 +434,22 @@ constructor(props) {
 
     // return <div style={this._customStyle()} > {this.detail} </div>
   }
+
+  _test = () => {
+    
+    
+    this.setState({ 
+      show: true
+    })
+  }
   
-  render() {  
+  render() { 
+    
+
     return (
       <div className="outer">
+      {/* <Button onMouseOver={this._test}  ref={this.attachRef} >TEST</Button> */}
+       
         <div className="header">
           <h1>{this._displayHeaderDate()}</h1>
           <div className="btnGroup" >
@@ -411,7 +461,8 @@ constructor(props) {
           </div>
         </div>
         <div className="main">
-          {this.state.now ? this._getCalendar() : '로딩'}     
+          {this.state.now ? this._getCalendar() : '로딩'}
+        
         </div> 
         <div className="bottom">
           {this.state.inputOpen ? this._bottomHeder() : ''}
@@ -419,7 +470,9 @@ constructor(props) {
           {this.state.inputOpen ? this._detailgroup() : '' }
           {this.state.ganttOpen ? this.ganttSchedule  : '' }
           </div>
-
+          <Overlay target={this.state.target} show={this.state.show} placement="right">
+            {props => <Tooltip id="testaaa" {...props}>My Tooltip</Tooltip>}
+          </Overlay>
           
         </div>
     )

@@ -4,14 +4,18 @@ class Day extends Component{
 
     constructor(props) {
         super(props)
-        console.log(props)
         this.style
         this.gantt
         this.today  = new Date()
+        this.prevMonth = { display: "none"}
+        this.nextMonth = { display: "none"}
+        this.ref = React.createRef()
         this.state = {
-            mouseEvent : false , 
-           
+            mouseEvent : false ,
         }
+
+    
+        
     }
 
     componentDidMount(){
@@ -21,9 +25,10 @@ class Day extends Component{
     componentWillUnmount() {
     
     }
+
+
   
     _customStyle = () =>{
-    
         
         if(this.state.mouseEvent){
             this.style = { backgroundColor: "lightgray" }
@@ -37,15 +42,20 @@ class Day extends Component{
 
     _overEvent = (event) =>{
         
-        console.log(this.props)
-
+        
         if(this.props.isClickDown) {
             this.props.dayOnMouseOver(event , this)
             this.gantt =  <span>&nbsp;</span>
-            // console.log('클릭상태')
 
-        }
+            console.log(this.ref)
+            console.log(this.ref.current.clientWidth)
+            let nextWidth = this.ref.current.clientWidth+'px'
 
+            this.prevMonth = { display: "inline" }
+            this.nextMonth = { display: "inline" ,
+                                left : nextWidth}
+           
+        }        
         this.setState({
             mouseEvent : true
         })
@@ -55,14 +65,22 @@ class Day extends Component{
     }
     _outEvent = (event) =>{
         // console.log(this.props.isClickDown)
-
+        if(this.props.isClickDown) {
+            if(this.props.index == 0 ){
+                this.prevMonth = { display: "none" }
+            }
+            else if(this.props.index == 41 ){
+                this.nextMonth = { display: "none" }
+            }
+        }
         this.setState({
             mouseEvent : false
         })
         
     }
    
-    _DayInfo = ({day , month, dayOfWeek , isMonth , year , isToday , isGantt , dayOnclick , dayOnMouseDown , dayOnMouseOver ,  dayOnMouseUp , schedule}) =>{
+   
+    _DayInfo = ({index, day , month, dayOfWeek , isMonth , year , isToday , isGantt , dayOnclick , dayOnMouseDown , dayOnMouseOver ,  dayOnMouseUp , schedule , moveMonth}) =>{
         
         let addSchedule = schedule.map( (value , index) => {
             let type = value.type
@@ -88,6 +106,22 @@ class Day extends Component{
         }
         let gantt = <div style={ { background : 'red'}}>{this.gantt}</div>
         // console.log(dayOnclick())
+        let prevMonth
+        let nextMonth
+        if(index == 0 ){
+            prevMonth = <div id="prevMonth"
+                            onMouseOver={(event) => { moveMonth(event , this)  } }
+                            style={ this.prevMonth }
+                         >prev</div>
+        }
+        if(index == 41 ){
+                        nextMonth = <div id="nextMonth"
+                            onMouseOver={(event) => { moveMonth(event , this)  } }
+                            style={ this.nextMonth }
+                         >next</div>
+        }
+        
+        
         return <div 
                     className={className} id={isToday ? "today" : "otherDay" } 
                     onMouseOver={(event) =>{ this._overEvent(event) }}
@@ -101,18 +135,24 @@ class Day extends Component{
                                             // this.gantt =  <span>&nbsp;</span>
                                         }}
                     style={this._customStyle() }
-                >   {el}
+                    ref={this.ref}
+                >   
+                    
+                    {el}
                     {gantt}
                     <div className="scheduleBox">
                         {addSchedule}
                     </div>
-                    
+                    {prevMonth}
+                    {nextMonth}
             
                 </div>
     }
  
     _renderInfo = () =>{
-        return <this._DayInfo 
+        return <this._DayInfo
+
+            index={this.props.index}
             day={this.props.day}
             month={this.props.month}
             year={this.props.year}
@@ -125,6 +165,7 @@ class Day extends Component{
             dayOnMouseUp={this.props.dayOnMouseUp}
             dayOnMouseOver={this.props.dayOnMouseOver}
             schedule={this.props.schedule}
+            moveMonth={this.props.moveMonth}
         ></this._DayInfo>
     }
         
