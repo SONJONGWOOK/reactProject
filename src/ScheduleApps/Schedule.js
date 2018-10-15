@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Day from './Day'
 import '../css/schedule.css';
-import { InputGroup  , DropdownButton , Dropdown , FormControl ,  Table , Button , ButtonGroup , Overlay , Tooltip  } from 'react-bootstrap';
+import { InputGroup  , DropdownButton , Dropdown , FormControl ,  Table , Button , ButtonGroup , Container ,  Row , Col  } from 'react-bootstrap';
 import loading from '../../asset/loading.gif'
 import {send} from './DataProcess'
 
@@ -26,9 +26,7 @@ constructor(props) {
   
   this.inputText
   this.detail
-  this.clickDay
-  this.ganttSchedule 
-  
+  this.clickDay 
   this.dropDownText = 'SELECT'
   this.today  = new Date()
   this.days = ['일' ,'월' ,'화' ,'수' ,'목' ,'금' ,'토' ]
@@ -46,6 +44,7 @@ constructor(props) {
       dropDownValue : this.dropDownText,
       mouseDown : false,
       list : [],
+      ganttList : [],
       show: false,
       target : undefined
     }
@@ -113,6 +112,7 @@ constructor(props) {
 
     
   }
+  //스케쥴 데이터
   _callApi = () =>{
     
     return  fetch('http://localhost:3000/calendar/get')
@@ -132,7 +132,7 @@ constructor(props) {
     // console.log(e.target.value)
     this.inputText = e.target.value
   }
-
+  //커스텀 스타일용
   _customStyle = () =>{
     if(this.state.inputOpen){
         return { display: "block" }
@@ -142,10 +142,12 @@ constructor(props) {
 }
 
   _dayOnclick = (event , thisObject) => {
-    
+    console.log('클릭이벤트')
+    console.log(this.state)
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
         
-    this.detail = thisObject.props.schedule
+    this.detail = [ ...thisObject.props.schedule , ...thisObject.props.ganttSchedule]
+        
     this.setState({
       inputOpen : true ,
       inputDay : date ,
@@ -156,6 +158,7 @@ constructor(props) {
     this.clickDay = date 
     
   }
+  //마우스 클릭 다운 이벤트
   _dayOnMouseDown = (event , thisObject) => {
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
     
@@ -172,23 +175,34 @@ constructor(props) {
     })
        
   }
+  //마우스 클릭 업 이벤트
   _dayOnMouseUp = (event , thisObject) => {
+    console.log(this.state)
+    
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
     
     // this.mouseDown = true
     thisObject.prevMonth = {display : "none"}
     thisObject.nextMonth = {display : "none"}
 
+    let start = this.state.ganttStart 
+    let end = date
+
+    if(this.state.ganttStart  >  date){
+      end = this.state.ganttStart
+      start = date
+    }
+    
+
     this.setState({
       mouseDown : false,
-      ganttEnd  : date,
+      ganttStart : start ,
+      ganttEnd  : end,
       ganttOpen : this.state.ganttStart.getTime()  ==  date.getTime()  ? false  : true ,
       inputOpen : false,
     })
-    this.ganttSchedule = <button onClick={(event) => { this._ganttSave(event , this) }} >ganttSave</button>
-    
   }
-
+  //일일 마우스 오버 이벤트
   _dayOnMouseOver = (event , thisObject) =>{ 
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
     
@@ -198,11 +212,8 @@ constructor(props) {
     })
   }
 
+  //간트차트용 드래그 달이동
   _moveMonth = (event , thisObject) =>{
-    // console.log(event.target.parentNode)
-    // console.log(event.target.parentNode.style)
-    // console.log(event.target.parentNode.style.width)
-    // console.log(event.target.parentNode.style.offsetWidth )
     thisObject.prevMonth = {display : "none"}
     thisObject.nextMonth = {display : "none"}
     if(thisObject.props.index == 0 ){
@@ -212,13 +223,11 @@ constructor(props) {
     }
   }
 
-
+  //일일 스케쥴 저장
   _inputSave =  (event , thisObject) => {
     
     let inputDay = this.state.inputDay
     let list  = this.state.list
-    
-    
     let inputData = {
           date : inputDay ,
           type : this.state.dropDownValue ,
@@ -232,30 +241,34 @@ constructor(props) {
     this.detail =list.filter(el => {
       return el.date.getTime() == inputDay.getTime()
     })
-    
     //초기화
     this.setState({
       // inputOpen : false,
       dropDownValue : this.dropDownText,
       list
     })
-
     
 
-    document.querySelector("#inputText").value=""
-
+  document.querySelector("#inputText").value=""
     
   }
-
+  //간트차트 저장
   _ganttSave = (event , thisObject) => {
-    
-    this.ganttSchedule  = ""
+    let ganttList  = this.state.ganttList
+    let gantt = { 
+                start : this.state.ganttStart,
+                end : this.state.ganttEnd,
+                type : this.state.dropDownValue ,
+                text :  document.querySelector("#inputText").value  
+    }
+    ganttList.push(gantt)
 
     this.setState({
       mouseDown : false,
       ganttStart : undefined,
       ganttEnd  : undefined,
       ganttOpen : false,
+      ganttList
     })
   }
 
@@ -300,13 +313,14 @@ constructor(props) {
     target.setDate(target.getDate()-dayNumber)
     return target
   }
-
+  //데이트 포멧
   _getDateformat = (date) =>{
     return {  yyyy : date.getFullYear(),
               MM : date.getMonth()+1,
               dd : date.getDate()
       }
   } 
+  //데이트 어레이
   _getDayArray = () =>{
     let arr = []
     let firstDay = this._getFirstDate(this.state.now)
@@ -320,13 +334,20 @@ constructor(props) {
           
     return arr
   }
+
+  //일일 데이터
    _setData = (date) =>{
-     
       let list = this.state.list
+      let ganttList = this.state.ganttList
       
       let matchList =list.filter(el => {
         return el.date.getTime() == date.getTime()
       })
+
+      let matchGanttList =ganttList.filter(el => {
+        return el.start <= date && el.end >= date
+      })
+        
       
       let ganttStart = this.state.ganttStart
       let ganttEnd = this.state.ganttEnd
@@ -335,23 +356,25 @@ constructor(props) {
         ganttEnd =  this.state.ganttStart
         ganttStart = this.state.ganttEnd
       }
-     
- 
+
+
       return {
             date : date,
             dayOfWeek : this.days[date.getDay()],
             isMonth : date.getMonth() == this.state.now.getMonth() ? true : false ,
             isToday : date.toLocaleDateString() == new Date().toLocaleDateString() ? true : false ,
             isGantt : date >= ganttStart &&  date <= ganttEnd ?  true : false , 
-            schedule : matchList    
+            schedule : matchList,
+            ganttSchedule : matchGanttList    
    }
   }
+  //캘린더그리기
   _getCalendar = () =>{
     
     let list = this._getDayArray() 
     
     return  list.map( (value , index) => {
-      // console.log(value)
+      
       return  <Day 
                 key={index}
                 index={index}
@@ -369,6 +392,7 @@ constructor(props) {
                 dayOnMouseOver={this._dayOnMouseOver}
                 moveMonth={this._moveMonth}
                 schedule={value.schedule}
+                ganttSchedule={value.ganttSchedule}
               ></Day>
     })
   }
@@ -379,15 +403,11 @@ constructor(props) {
   }
   _bottomHeder = () =>{
       // console.log(this.clickDay)
-    return <h1 style={this._customStyle()}  >{this.clickDay.toLocaleDateString() + " detail schedule"}</h1>
+    return <h1 style={this._customStyle()}  >{this.clickDay.toLocaleDateString() + " Detail Schedule"}</h1>
   }
 
-  _inputgroup = () =>{    
-     //드롭다운 버튼 
-     //<button type="button" tabindex="0" class="dropdown-item">1</button>
-    return <div className="inputArea"  style={this._customStyle()} >
-
-       <InputGroup className="mb-3">
+  _inputgroupProperty = (fnc) => {
+   return <InputGroup className="mb-3">
     <DropdownButton
       as={InputGroup.Prepend}
       variant="outline-secondary"
@@ -399,18 +419,33 @@ constructor(props) {
       <Dropdown.Item onClick={(event) => this._changeDropValue(event)} >TYPE3</Dropdown.Item>
     </DropdownButton>
     <FormControl aria-describedby="basic-addon1" id="inputText" type="text" placeholder="내용" />
-    {/* <Input id="inputText" type="text" placeholder="내용"/> */}
-    <Button color="secondary" onClick={ (event) => { this._inputSave(event , this) }}>SAVE</Button>
-  </InputGroup>
+      <Button color="secondary" onClick={ (event) => { fnc(event , this) }}>SAVE</Button>
+    </InputGroup>
+  }
 
+  _inputgroup = () =>{    
+     //드롭다운 버튼 
+     //<button type="button" tabindex="0" class="dropdown-item">1</button>
+    //  return <div className="inputArea"  style={this._customStyle()} ></div>
+    return <div className="inputArea">
+    {this._inputgroupProperty(this._inputSave)}
+    </div> 
+  }
+
+  _ganttInput = () =>{
+    console.log(this.state)    
+    return <div className="ganttArea">
+      <h1 >{this.state.ganttStart.toLocaleDateString() +' ~ '+ this.state.ganttEnd.toLocaleDateString() + " Gantt Schedule"}</h1>
+      {this._inputgroupProperty(this._ganttSave)}
     </div> 
   }
   _detailgroup = () =>{   
     // console.log(this.detail)
     let addBody = this.detail.map( (value , index) =>{
+       let date = value.date == undefined ? value.start.toLocaleDateString()+"~"+value.end.toLocaleDateString()  : value.date.toLocaleDateString()
         return    <tr key={index}>
                     <th scope="row">{index+1}</th>
-                    <td>{value.date.toLocaleDateString()}</td>
+                    <td>{date}</td>
                     <td>{value.type}</td>
                     <td>{value.text}</td>
                   </tr>
@@ -445,7 +480,7 @@ constructor(props) {
   
   render() { 
     
-
+    console.log("랜더링")
     return (
       <div className="outer">
       {/* <Button onMouseOver={this._test}  ref={this.attachRef} >TEST</Button> */}
@@ -468,11 +503,9 @@ constructor(props) {
           {this.state.inputOpen ? this._bottomHeder() : ''}
           {this.state.inputOpen ? this._inputgroup() : ''}
           {this.state.inputOpen ? this._detailgroup() : '' }
-          {this.state.ganttOpen ? this.ganttSchedule  : '' }
+          {this.state.ganttOpen ? this._ganttInput()  : '' }
           </div>
-          <Overlay target={this.state.target} show={this.state.show} placement="right">
-            {props => <Tooltip id="testaaa" {...props}>My Tooltip</Tooltip>}
-          </Overlay>
+      
           
         </div>
     )

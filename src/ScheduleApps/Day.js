@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import bigStar from '../../asset/big-star.svg'
 
 class Day extends Component{
 
@@ -25,9 +26,7 @@ class Day extends Component{
     componentWillUnmount() {
     
     }
-
-
-  
+   
     _customStyle = () =>{
         
         if(this.state.mouseEvent){
@@ -47,8 +46,6 @@ class Day extends Component{
             this.props.dayOnMouseOver(event , this)
             this.gantt =  <span>&nbsp;</span>
 
-            console.log(this.ref)
-            console.log(this.ref.current.clientWidth)
             let nextWidth = this.ref.current.clientWidth+'px'
 
             this.prevMonth = { display: "inline" }
@@ -80,32 +77,34 @@ class Day extends Component{
     }
    
    
-    _DayInfo = ({index, day , month, dayOfWeek , isMonth , year , isToday , isGantt , dayOnclick , dayOnMouseDown , dayOnMouseOver ,  dayOnMouseUp , schedule , moveMonth}) =>{
-        
+    _DayInfo = ({index, day , month, dayOfWeek , isMonth , year , isToday , isGantt , dayOnclick , dayOnMouseDown , dayOnMouseOver ,  dayOnMouseUp , schedule , ganttSchedule, moveMonth}) =>{
+        let colorIndex  = 0
+
         let addSchedule = schedule.map( (value , index) => {
             let type = value.type
             let display
+          
             switch(type){
-                case 'SELECT' :  display = <span>&#10004;</span>
+                case 'SELECT' :  display = <span>&#10004;</span>                              
                 break
-                case 'TYPE1' :  display = <span>&#10000;</span>
+                case 'TYPE1' :  display = <span>&#10000;</span>                              
                 break
-                case 'TYPE2' :  display =  <span>&#9996;</span>
+                case 'TYPE2' :  display =  <span>&#9996;</span>                            
                 break
                 default : display =  <span>&#9995;</span>
+                break
             }
             return <span className="scheduleIcon"  key={day+""+index}>{display}</span>
         })
+        
+        // let color = "rgb("+(255-(ganttSchedule.length*20))+", "+(255-(ganttSchedule.length*20))+", 255)"
+
+        let ganttStyle =ganttSchedule.length > 0 ? {background : "rgba( 255 , 0 , 0 , "+ganttSchedule.length*0.1+")" ,  height : "0.2rem"} : {}   
+        let addGantt = <div style={ ganttStyle }><span>&nbsp;</span></div>
+        
         let className = isMonth ? "day"  : "day otherMonth"
         let addMonth = isMonth ? ""  : <span>{month}월</span>
-        let el =<span>{addMonth}{day}일</span>
-        if(isGantt) {
-            this.gantt = <span>&nbsp;</span>
-        }else{
-            this.gantt = ''
-        }
-        let gantt = <div style={ { background : 'red'}}>{this.gantt}</div>
-        // console.log(dayOnclick())
+        let el =<span id={isToday ? "today" : "otherDay" } >{addMonth}{day}일  {isToday ? <object id="todaySvg" type="image/svg+xml" data={bigStar}></object> : "" }</span>
         let prevMonth
         let nextMonth
         if(index == 0 ){
@@ -123,7 +122,8 @@ class Day extends Component{
         
         
         return <div 
-                    className={className} id={isToday ? "today" : "otherDay" } 
+                    className={className}
+                    id={isGantt ? "gantt" : "notGantt" } 
                     onMouseOver={(event) =>{ this._overEvent(event) }}
                     onMouseOut={(event) => { this._outEvent(event)  
                                             }}
@@ -139,13 +139,17 @@ class Day extends Component{
                 >   
                     
                     {el}
-                    {gantt}
+                    <div>
+                        {addGantt}
+                    </div>
+                    
                     <div className="scheduleBox">
-                        {addSchedule}
+                    {addSchedule}
                     </div>
                     {prevMonth}
                     {nextMonth}
-            
+                    
+                                       
                 </div>
     }
  
@@ -164,8 +168,9 @@ class Day extends Component{
             dayOnMouseDown={this.props.dayOnMouseDown}
             dayOnMouseUp={this.props.dayOnMouseUp}
             dayOnMouseOver={this.props.dayOnMouseOver}
-            schedule={this.props.schedule}
             moveMonth={this.props.moveMonth}
+            schedule={this.props.schedule}
+            ganttSchedule={this.props.ganttSchedule}
         ></this._DayInfo>
     }
         

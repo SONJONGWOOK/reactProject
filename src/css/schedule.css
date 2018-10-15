@@ -60,7 +60,21 @@
 
 
 #today{
-   border: 3px solid red;
+   /* border: 3px solid red; */
+   border-radius: 30%;
+   width: 100%;
+   background: pink;
+   
+}
+
+#todaySvg{
+    width: 1rem;
+    height: 1rem;
+    /* fill확인해보기 */
+    /* fill:yellow; */
+}
+#gantt{
+    border: 2px solid blue;
 }
 
 #prevMonth{
