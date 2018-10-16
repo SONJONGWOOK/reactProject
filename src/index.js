@@ -19,7 +19,7 @@ class Index extends Component {
          <Nav className = "subNav">
              <NavItem href="/resource/" to="/resource.">Resource</NavItem>
              <NavItem href="/movie/" to="/movie/">Movie</NavItem>
-            
+             <NavItem href="/schedule/" to="/schedule/">Schedule</NavItem>
         </Nav>
       </Navbar>
 }
@@ -36,4 +36,3 @@ class Index extends Component {
 
 let rootElement = document.getElementById('index')
 ReactDOM.render(<Index/>, rootElement)
-

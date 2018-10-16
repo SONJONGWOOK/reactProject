@@ -6,9 +6,15 @@ const router = express.Router()
 
 
 router.post('/post', (req, res) => {
-    schedulePost(req.body)
-    logger.info("저장완료")
-    logger.info(req.body)
+    schedulePost(req.body).then( (result) =>{
+        logger.info("저장완료")
+        logger.info(result)
+        res.send(result)
+    }).catch( (err) =>{
+        logger.error(err)
+        res.send(err)
+    })
+
 })
 
 router.get('/get' , (req , res) =>{

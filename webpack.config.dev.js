@@ -4,6 +4,7 @@ const webpack = require('webpack');
 module.exports = {
     mode: 'development' ,
     entry:{
+        // app : ['./src/movie.js' , './src/resource.js', './src/schedule.js'] ,
         // movie : './src/movie.js' ,
         // resource : './src/resource.js',
         // app : './src/resource.js',

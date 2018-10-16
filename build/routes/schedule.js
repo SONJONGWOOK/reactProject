@@ -20,9 +20,14 @@ var path = require('path');
 var router = _express2.default.Router();
 
 router.post('/post', function (req, res) {
-    (0, _factory.schedulePost)(req.body);
-    _loggerInit.appLogger.info("저장완료");
-    _loggerInit.appLogger.info(req.body);
+    (0, _factory.schedulePost)(req.body).then(function (result) {
+        _loggerInit.appLogger.info("저장완료");
+        _loggerInit.appLogger.info(result);
+        res.send(result);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
 });
 
 router.get('/get', function (req, res) {

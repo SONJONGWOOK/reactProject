@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import Day from './Day'
 import '../css/schedule.css';
-import { InputGroup  , DropdownButton , Dropdown , FormControl ,  Table , Button , ButtonGroup , Container ,  Row , Col  } from 'react-bootstrap';
+import { SplitButton  ,  MenuItem  , Table , Button , ButtonGroup ,ButtonToolbar , FormControl  } from 'react-bootstrap';
 import loading from '../../asset/loading.gif'
 import {send} from './DataProcess'
-
-
 //윈도우 달력과 동일하게 제작
 //총 6줄 기준은 1일에 기준에 맞추서 제작
 // 1일이 토요일이라면
@@ -55,7 +53,7 @@ constructor(props) {
   }
   
   componentDidMount(){
-    this._initDataList()
+    this._getDataList()
   //총 42칸 제작 = 7*6
     //달 시작
     // console.log(new Date( this.year , this.today.getMonth() , 1).toLocaleDateString())
@@ -97,24 +95,26 @@ constructor(props) {
     
   }
 
-  _initDataList = async () =>{
+  _getDataList = async () =>{
 
     let list = await this._callApi();
-    list = list.map( ( data) =>{
+    let daily = []
+    list.map( ( data) =>{
       let convertDate = new Date(data.date)
       data.date = convertDate
-      return data
+      daily.push(data)
+      
     })
     
     this.setState({
-      list
+      list : daily
     })
-
+    
     
   }
   //스케쥴 데이터
   _callApi = () =>{
-    
+
     return  fetch('http://localhost:3000/calendar/get')
     .then(data => data.json())
     .catch(err => console.log(err))
@@ -142,10 +142,8 @@ constructor(props) {
 }
 
   _dayOnclick = (event , thisObject) => {
-    console.log('클릭이벤트')
-    console.log(this.state)
-    let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
-        
+    
+    let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)    
     this.detail = [ ...thisObject.props.schedule , ...thisObject.props.ganttSchedule]
         
     this.setState({
@@ -205,14 +203,13 @@ constructor(props) {
   //일일 마우스 오버 이벤트
   _dayOnMouseOver = (event , thisObject) =>{ 
     let date = new Date(thisObject.props.year , thisObject.props.month-1 ,  thisObject.props.day)
-    
-    
+ 
     this.setState({
       ganttEnd  : date,
     })
   }
 
-  //간트차트용 드래그 달이동
+  //간트차트용 드래그 달 이동
   _moveMonth = (event , thisObject) =>{
     thisObject.prevMonth = {display : "none"}
     thisObject.nextMonth = {display : "none"}
@@ -224,7 +221,7 @@ constructor(props) {
   }
 
   //일일 스케쥴 저장
-  _inputSave =  (event , thisObject) => {
+  _inputSave = async (event , thisObject) => {
     
     let inputDay = this.state.inputDay
     let list  = this.state.list
@@ -233,20 +230,23 @@ constructor(props) {
           type : this.state.dropDownValue ,
           text :  document.querySelector("#inputText").value  
     }   
-    
-    send('http://localhost:3001/calendar/post' , {'type' : this.state.dropDownValue  , 'text' : document.querySelector("#inputText").value , 'date' : inputDay })
-    
-    list.push(inputData)
-
-    this.detail =list.filter(el => {
-      return el.date.getTime() == inputDay.getTime()
-    })
+  
+    let result = await send('http://localhost:3001/calendar/post' , {'type' : this.state.dropDownValue  , 'text' : document.querySelector("#inputText").value , 'date' : inputDay })
+    if(result == undefined || result  == null || result._id == undefined ){
+      alert("저장실패")
+      return
+    }   
+    result.date = new Date(result.date)
+    this.detail.push(result)  
+    list.push(result)
     //초기화
     this.setState({
       // inputOpen : false,
       dropDownValue : this.dropDownText,
       list
     })
+    
+
     
 
   document.querySelector("#inputText").value=""
@@ -270,6 +270,12 @@ constructor(props) {
       ganttOpen : false,
       ganttList
     })
+  }
+
+  _removeData(event , thisObject){
+    console.log(event.target.name)
+    console.log(thisObject)
+    console.log(thisObject.detail[event.target.name])
   }
 
   //달력 이전달
@@ -407,20 +413,18 @@ constructor(props) {
   }
 
   _inputgroupProperty = (fnc) => {
-   return <InputGroup className="mb-3">
-    <DropdownButton
-      as={InputGroup.Prepend}
-      variant="outline-secondary"
-      title={this.state.dropDownValue}
-      id="input-group-dropdown-1">
-      <Dropdown.Item  onClick={(event) => this._changeDropValue(event)} >TYPE1</Dropdown.Item>
-      <Dropdown.Item onClick={(event) => this._changeDropValue(event)} >TYPE2</Dropdown.Item>
-      <Dropdown.Divider />
-      <Dropdown.Item onClick={(event) => this._changeDropValue(event)} >TYPE3</Dropdown.Item>
-    </DropdownButton>
-    <FormControl aria-describedby="basic-addon1" id="inputText" type="text" placeholder="내용" />
-      <Button color="secondary" onClick={ (event) => { fnc(event , this) }}>SAVE</Button>
-    </InputGroup>
+
+    return  <div id="inputGourpProperty">
+            <SplitButton id="splitBtn " title={this.state.dropDownValue} pullRight id="split-button-pull-right">
+           <MenuItem onClick={(event) => this._changeDropValue(event) } eventKey="1">TYPE1</MenuItem>
+            <MenuItem onClick={(event) => this._changeDropValue(event) } eventKey="2">TYPE2</MenuItem>
+            <MenuItem onClick={(event) => this._changeDropValue(event) } eventKey="3">TYPE3</MenuItem>
+            <MenuItem divider />
+            <MenuItem onClick={(event) => this._changeDropValue(event) } eventKey="4">TYPE4</MenuItem>
+          </SplitButton>
+          <FormControl aria-describedby="basic-addon1" id="inputText" type="text" placeholder="내용" />
+          <Button id="inputGroupBtn" color="secondary" onClick={ (event) => { fnc(event , this) }}>SAVE</Button>
+          </div>
   }
 
   _inputgroup = () =>{    
@@ -448,18 +452,24 @@ constructor(props) {
                     <td>{date}</td>
                     <td>{value.type}</td>
                     <td>{value.text}</td>
+                    <td> 수정</td>
+                    <td>
+                      <Button name={index}onClick={ (e) => { this._removeData(e, this)}}>삭제
+                      </Button>
+                    </td>
                   </tr>
-      // return <div key={index} >{value.text}</div>
+      
     })
-
+    
     return <Table  style={this._customStyle()} hover>
     <thead>
       <tr >
         <th></th>
         <th className="detail">일자</th>
-        <th className="detail">종류</th>
+        <th className="detail" id="detailType">종류</th>
         <th className="detail">내용</th>
-     
+        <th className="detailBtn">수정</th>  
+        <th className="detailBtn">삭제</th>  
       </tr>
     </thead>
     <tbody>
@@ -467,20 +477,11 @@ constructor(props) {
     </tbody>
   </Table>
 
-    // return <div style={this._customStyle()} > {this.detail} </div>
-  }
 
-  _test = () => {
-    
-    
-    this.setState({ 
-      show: true
-    })
   }
-  
   render() { 
-    
     console.log("랜더링")
+    
     return (
       <div className="outer">
       {/* <Button onMouseOver={this._test}  ref={this.attachRef} >TEST</Button> */}
@@ -505,7 +506,7 @@ constructor(props) {
           {this.state.inputOpen ? this._detailgroup() : '' }
           {this.state.ganttOpen ? this._ganttInput()  : '' }
           </div>
-      
+          
           
         </div>
     )

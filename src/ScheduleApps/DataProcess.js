@@ -1,21 +1,29 @@
-const send = (targetUrl , data ) =>{
-    
+const send = async (targetUrl , data ) =>{
+    let output 
     let url = targetUrl
-    fetch(url, {  
+     await fetch(url, {  
         method: 'POST',  
         headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
         body : JSON.stringify(data)
     })
-    .then(function (data) {  
-      console.log('Request success: ', data);  
-    })  
-    .catch(function (error) {  
-      console.error('Request failure: ', error);  
-    });
+    .then( (response) =>{
 
+      return response.json()
+    })
+    .then( (result) =>{  
+      console.log('Request success: ', result);  
+      output = result
+    })  
+    .catch(  (error) =>{  
+      console.error('Request failure: ', error);  
+      output =  error
+    })
+    return output
 }
+
 
 const recevie = (targetUrl) =>{
   return  fetch(targetUrl)

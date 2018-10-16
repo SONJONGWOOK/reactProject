@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import loading from '../../asset/loading.gif'
 import bigStar from '../../asset/big-star.svg'
 
 class Day extends Component{
@@ -99,9 +100,9 @@ class Day extends Component{
         
         // let color = "rgb("+(255-(ganttSchedule.length*20))+", "+(255-(ganttSchedule.length*20))+", 255)"
 
-        let ganttStyle =ganttSchedule.length > 0 ? {background : "rgba( 255 , 0 , 0 , "+ganttSchedule.length*0.1+")" ,  height : "0.2rem"} : {}   
+        let ganttStyle =ganttSchedule.length > 0 ? {background : "rgba( 255 , 0 , 0 , "+ganttSchedule.length*0.1+")" ,  height : "0.2rem"} : {display :"none"}   
         let addGantt = <div style={ ganttStyle }><span>&nbsp;</span></div>
-        
+
         let className = isMonth ? "day"  : "day otherMonth"
         let addMonth = isMonth ? ""  : <span>{month}월</span>
         let el =<span id={isToday ? "today" : "otherDay" } >{addMonth}{day}일  {isToday ? <object id="todaySvg" type="image/svg+xml" data={bigStar}></object> : "" }</span>
