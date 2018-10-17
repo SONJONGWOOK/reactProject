@@ -238,16 +238,15 @@ constructor(props) {
     }   
     result.date = new Date(result.date)
     this.detail.push(result)  
-    list.push(result)
-    //초기화
+    
+    this._getDataList()
+  
     this.setState({
       // inputOpen : false,
       dropDownValue : this.dropDownText,
-      list
+    
     })
-    
-
-    
+       
 
   document.querySelector("#inputText").value=""
     
@@ -272,10 +271,17 @@ constructor(props) {
     })
   }
 
-  _removeData(event , thisObject){
-    console.log(event.target.name)
-    console.log(thisObject)
-    console.log(thisObject.detail[event.target.name])
+  _removeData = async (event , thisObject) => {
+    let targetNo = event.target.name
+   
+    let result = await send('http://localhost:3001/calendar/remove' , thisObject.detail[targetNo] )
+
+    if(result == undefined || result  == null || result._id == undefined ){
+      alert("저장실패")
+    }   
+    
+    this.detail.splice(targetNo , 1)
+    this._getDataList()
   }
 
   //달력 이전달
@@ -437,7 +443,7 @@ constructor(props) {
   }
 
   _ganttInput = () =>{
-    console.log(this.state)    
+    
     return <div className="ganttArea">
       <h1 >{this.state.ganttStart.toLocaleDateString() +' ~ '+ this.state.ganttEnd.toLocaleDateString() + " Gantt Schedule"}</h1>
       {this._inputgroupProperty(this._ganttSave)}
@@ -449,11 +455,11 @@ constructor(props) {
        let date = value.date == undefined ? value.start.toLocaleDateString()+"~"+value.end.toLocaleDateString()  : value.date.toLocaleDateString()
         return    <tr key={index}>
                     <th scope="row">{index+1}</th>
-                    <td>{date}</td>
-                    <td>{value.type}</td>
-                    <td>{value.text}</td>
-                    <td> 수정</td>
-                    <td>
+                    <td className="detail">{date}</td>
+                    <td className="detail" id="detailType">{value.type}</td>
+                    <td className="detail" id="detailDesc">{value.text}</td>
+                    <td className="detailBtn"> 수정</td>
+                    <td className="detailBtn" >
                       <Button name={index}onClick={ (e) => { this._removeData(e, this)}}>삭제
                       </Button>
                     </td>
@@ -461,7 +467,7 @@ constructor(props) {
       
     })
     
-    return <Table  style={this._customStyle()} hover>
+    return <Table style={this._customStyle()} hover>
     <thead>
       <tr >
         <th></th>

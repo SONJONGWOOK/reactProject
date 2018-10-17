@@ -30,6 +30,18 @@ router.post('/post', function (req, res) {
     });
 });
 
+router.post('/remove', function (req, res) {
+    _loggerInit.appLogger.info("remove");
+    (0, _factory.schdeuleDelete)(req.body).then(function (result) {
+        _loggerInit.appLogger.info("삭제완료");
+        _loggerInit.appLogger.info(result);
+        res.send(result);
+    }).catch(function (err) {
+        _loggerInit.appLogger.error(err);
+        res.send(err);
+    });
+});
+
 router.get('/get', function (req, res) {
 
     (0, _factory.scheduleGet)().then(function (result) {

@@ -12,12 +12,25 @@
     
     margin: 3rem 3rem 0rem 3rem;
 }
+
 .detail{
+    text-align: center;
     width: 30%;
     min-width: 30%;
+    max-width: 30%;
+   
 }
 #detailType{
     width: 10%;
+    min-width: 10%;
+    max-width: 10%;
+}
+#detailDesc{
+    width: 50%;
+    min-width: 50%;
+    max-width: 50%;
+    text-align: left;
+    word-break: break-all;
 }
 .day{
     border: 1px solid black;

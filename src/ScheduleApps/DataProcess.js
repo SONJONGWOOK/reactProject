@@ -1,5 +1,6 @@
 const send = async (targetUrl , data ) =>{
     let output 
+    
     let url = targetUrl
      await fetch(url, {  
         method: 'POST',  
@@ -10,7 +11,6 @@ const send = async (targetUrl , data ) =>{
         body : JSON.stringify(data)
     })
     .then( (response) =>{
-
       return response.json()
     })
     .then( (result) =>{  
@@ -23,6 +23,8 @@ const send = async (targetUrl , data ) =>{
     })
     return output
 }
+
+
 
 
 const recevie = (targetUrl) =>{

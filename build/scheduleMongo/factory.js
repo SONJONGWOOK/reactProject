@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.schedulePost = exports.scheduleGet = undefined;
+exports.schdeuleDelete = exports.schedulePost = exports.scheduleGet = undefined;
 
 var _loggerInit = require('../logger/loggerInit');
 
@@ -16,6 +16,8 @@ var _mongoose2 = _interopRequireDefault(_mongoose);
 var _scheduleModel = require('../models/scheduleModel');
 
 var _post = require('./post');
+
+var _remove = require('./remove');
 
 var _find = require('./find');
 
@@ -32,6 +34,15 @@ var basic = new Schema({
     timestamps: true
 });
 
+var gantt = new Schema({
+    type: { type: String },
+    text: { type: String },
+    start: { type: Date },
+    end: { type: Date }
+}, {
+    timestamps: true
+});
+
 var scheduleConn = _mongoose2.default.createConnection('mongodb://jsplays.iptime.org:27017/schedule');
 // .then( (conn)=> {
 //         console.log('Successfully connected to mongodb to schedule')
@@ -43,10 +54,14 @@ var scheduleConn = _mongoose2.default.createConnection('mongodb://jsplays.iptime
 // console.log("scheduleConn  " ,scheduleConn.connection.readyState)
 
 var scheduleModel = scheduleConn.model('schedule', basic, 'schedule');
+var ganttModel = scheduleConn.model('gantt', gantt, 'gantt');
 
 var scheduleGet = exports.scheduleGet = function scheduleGet() {
     return (0, _find.getScheduleList)(scheduleModel);
 };
 var schedulePost = exports.schedulePost = function schedulePost(data) {
     return (0, _post.post)(scheduleModel, data);
+};
+var schdeuleDelete = exports.schdeuleDelete = function schdeuleDelete(data) {
+    return (0, _remove.deleteOne)(scheduleModel, data);
 };
