@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.getScheduleList = undefined;
+exports.getScheduleGanttList = exports.getScheduleList = undefined;
 
 var _loggerInit = require('../logger/loggerInit');
 
@@ -14,4 +14,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var getScheduleList = function getScheduleList(scheduleModel) {
     return scheduleModel.find();
 };
+var getScheduleGanttList = function getScheduleGanttList(ganttModel) {
+    return ganttModel.find();
+};
+
 exports.getScheduleList = getScheduleList;
+exports.getScheduleGanttList = getScheduleGanttList;

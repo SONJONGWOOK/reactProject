@@ -1,24 +1,25 @@
 import log4js , {jsonLogger , appLogger as logger} from '../logger/loggerInit'
 import mongoose from 'mongoose'
-import {ModelBasic} from '../models/scheduleModel';
-import {post} from './post'
-import {deleteOne}from './remove'
-import {getScheduleList}from './find'
+// import {ModelBasic} from '../models/scheduleModel';
+import {post , postGantt} from './post'
+import {deleteOne , deleteOneGantt}from './remove'
+import {getScheduleList, getScheduleGanttList}from './find'
 
 
 const Schema = mongoose.Schema
 
 const basic = new Schema ({
+    property : {type : String},
     type : { type : String},
     text : { type : String } ,
     date : { type : Date} ,
-    // date : { type : Date , default : Date.now}
     },
     {
         timestamps: true
 })
 
 const gantt = new Schema ({
+    property : {type : String},
     type : { type : String},
     text : { type : String } ,
     start : { type : Date} ,
@@ -45,6 +46,10 @@ const ganttModel = scheduleConn.model('gantt' , gantt , 'gantt')
 export const scheduleGet = () => { return getScheduleList(scheduleModel) }
 export const schedulePost = (data) => {return post(scheduleModel , data) }
 export const schdeuleDelete = (data) =>{return deleteOne (scheduleModel , data )}
+
+export const scheduleGanttGet = () => { return getScheduleGanttList(ganttModel) }
+export const scheduleGanttPost = (data) => {return postGantt(ganttModel , data) }
+export const schdeuleGanttDelete = (data) =>{return deleteOneGantt (ganttModel , data )}
 
 
 

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.post = undefined;
+exports.postGantt = exports.post = undefined;
 
 var _loggerInit = require('../logger/loggerInit');
 
@@ -13,18 +13,33 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var post = function post(scheduleModel, data) {
 
+    _loggerInit.appLogger.debug(data);
+
     var save = new scheduleModel({
+
         type: data.type,
         text: data.text,
-        date: data.date
-    });
+        date: data.date,
+        property: data.property
 
-    //    save.save().then( (e) => {
-    //        logger.info("shedule save complete") 
-    //     }).catch(e => {
-    //         logger.error(e)
-    //     })
+    });
+    return save.save();
+};
+
+var postGantt = function postGantt(ganttModel, data) {
+
+    _loggerInit.appLogger.debug(data);
+
+    var save = new ganttModel({
+        type: data.type,
+        text: data.text,
+        start: data.start,
+        end: data.end,
+        property: data.property
+
+    });
     return save.save();
 };
 
 exports.post = post;
+exports.postGantt = postGantt;

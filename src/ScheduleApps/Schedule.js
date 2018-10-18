@@ -23,7 +23,7 @@ constructor(props) {
   super(props);
   
   this.inputText
-  this.detail
+  this.detail = []
   this.clickDay 
   this.dropDownText = 'SELECT'
   this.today  = new Date()
@@ -98,28 +98,39 @@ constructor(props) {
   _getDataList = async () =>{
 
     let list = await this._callApi();
-    let daily = []
-    list.map( ( data) =>{
-      let convertDate = new Date(data.date)
-      data.date = convertDate
-      daily.push(data)
-      
+    let  ganttList = await this._callGanttApi();
+    
+    list = list.map( ( data) =>{
+      data.date =  new Date(data.date)
+      return data
     })
     
+    ganttList = ganttList.map( ( data) =>{
+      data.start =  new Date(data.start)
+      data.end =  new Date(data.end)
+      return data
+    })
+    
+    
     this.setState({
-      list : daily
+      list ,
+      ganttList
     })
     
     
   }
   //스케쥴 데이터
   _callApi = () =>{
-
     return  fetch('http://localhost:3000/calendar/get')
     .then(data => data.json())
     .catch(err => console.log(err))
-    }
+  }
   
+  _callGanttApi = () =>{
+    return  fetch('http://localhost:3000/calendar/getGantt')
+    .then(data => data.json())
+    .catch(err => console.log(err))
+  }
 
   _changeDropValue = (e) =>{
     
@@ -228,10 +239,11 @@ constructor(props) {
     let inputData = {
           date : inputDay ,
           type : this.state.dropDownValue ,
-          text :  document.querySelector("#inputText").value  
+          text :  document.querySelector("#inputText").value  ,
+          property : 'day'
     }   
   
-    let result = await send('http://localhost:3001/calendar/post' , {'type' : this.state.dropDownValue  , 'text' : document.querySelector("#inputText").value , 'date' : inputDay })
+    let result = await send('http://localhost:3001/calendar/post' , inputData)
     if(result == undefined || result  == null || result._id == undefined ){
       alert("저장실패")
       return
@@ -252,34 +264,50 @@ constructor(props) {
     
   }
   //간트차트 저장
-  _ganttSave = (event , thisObject) => {
+  _ganttSave = async (event , thisObject) => {
     let ganttList  = this.state.ganttList
     let gantt = { 
                 start : this.state.ganttStart,
                 end : this.state.ganttEnd,
                 type : this.state.dropDownValue ,
-                text :  document.querySelector("#inputText").value  
+                text :  document.querySelector("#inputText").value  ,
+                property : 'gantt'
     }
-    ganttList.push(gantt)
+    
+    let result = await send('http://localhost:3001/calendar/postGantt' , gantt )
+    if(result == undefined || result  == null || result._id == undefined ){
+      alert("저장실패")
+      return
+    }   
+    // console.log(gantt)
+    // ganttList.push(gantt)
 
+    this._getDataList()
+    
     this.setState({
       mouseDown : false,
       ganttStart : undefined,
       ganttEnd  : undefined,
       ganttOpen : false,
-      ganttList
+      // ganttList
     })
   }
 
   _removeData = async (event , thisObject) => {
     let targetNo = event.target.name
    
-    let result = await send('http://localhost:3001/calendar/remove' , thisObject.detail[targetNo] )
+    console.log(thisObject.detail[targetNo])
+    
+    let url = 'remove'
+    if(thisObject.detail[targetNo].property == 'gantt') {
+      url = 'removeGantt'
+    }
+
+    let result = await send('http://localhost:3001/calendar/'+url , thisObject.detail[targetNo] )
 
     if(result == undefined || result  == null || result._id == undefined ){
-      alert("저장실패")
-    }   
-    
+      alert("삭제 실패")
+    }      
     this.detail.splice(targetNo , 1)
     this._getDataList()
   }
